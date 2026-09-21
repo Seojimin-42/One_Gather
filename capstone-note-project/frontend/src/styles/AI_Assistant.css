@@ -1,0 +1,19 @@
+.ai-assistant {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 1000;
+}
+
+.ai-character-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.ai-character-button img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}

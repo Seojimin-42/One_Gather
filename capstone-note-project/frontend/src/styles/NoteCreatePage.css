@@ -1,0 +1,1083 @@
+.note-create-content-section.content {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    background-image: none;
+    padding: 8px 8px 20px;
+    min-height: calc(100vh - 120px);
+    height: auto;
+    overflow: visible;
+}
+
+.note-create-board {
+    width: max-content;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding-left: 10px;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-create-topbar {
+    width: 860px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+    margin-left: 142px;
+}
+
+.note-create-page-indicator {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3E4A3E;
+}
+
+.note-create-page-number {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: 700;
+  color: #7d5a3c;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+.note-create-complete-button {
+    border: none;
+    background-color: #7d5a3c;
+    color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(125, 90, 60, 0.18);
+    margin-left: 12px;
+
+    transition:
+      background-color 0.16s ease,
+      transform 0.12s ease,
+      box-shadow 0.16s ease;
+}
+
+.note-create-complete-button:hover {
+    background-color: #6b4b31;
+    transform: scale(0.96);
+    box-shadow: 0 3px 8px rgba(125, 90, 60, 0.22);
+}
+
+.note-create-workspace {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    flex: 1;
+    flex: 0 0 auto;
+    width: max-content;
+    min-height: 0;
+}
+
+.note-create-paper-column {
+    flex: 0 0 auto;
+    min-width: 860px;
+    min-height: 0;
+    margin-left: 150px;
+}
+
+.note-create-scroll-area {
+  height: auto;
+  overflow: visible;
+  padding-right: 14px; /* 스크롤바를 노트 바깥처럼 보이게 */
+  box-sizing: border-box;
+}
+
+.note-create-scroll-area.has-multiple-pages {
+  max-height: 1180px;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.note-create-scroll-area::-webkit-scrollbar {
+  width: 10px;
+}
+
+.note-create-scroll-area::-webkit-scrollbar-thumb {
+  background: #cbbfa6;
+  border-radius: 999px;
+}
+
+.note-create-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.note-create-pages {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    min-width: 860px;
+    width: max-content;
+    height: auto;
+    overflow: visible;
+    padding: 8px 6px 18px;
+    scroll-behavior: smooth;
+}
+
+.note-create-pages::-webkit-scrollbar {
+  width: 10px;  
+}
+
+.note-create-pages::-webkit-scrollbar-thumb {
+  background: #cbbfa6;
+  border-radius: 999px;
+}
+
+.note-create-pages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.note-create-paper {
+  flex: 0 0 1180px;
+  width: 860px;
+  height: 1180px;
+  min-height: 1180px;
+  max-height: 1180px;
+  box-sizing: border-box;
+  padding: 38px 42px 44px;
+  border-radius: 8px;
+  background-color: #fffdf8;
+  background-size: 100% 100%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  box-shadow: 0 10px 24px rgba(62, 74, 62, 0.12);
+  border: 1px solid rgba(198, 185, 158, 0.45);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.note-create-body-area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 6px 8px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 노트 간격 줄 맞추기 */
+
+/* ── 템플릿 1 ── */
+.note-create-paper.template-1 .note-create-title-input {
+  margin-top: -3px;
+}
+
+.note-create-paper.template-1 .note-create-content-input {
+  padding-top: 3px;
+  padding-left: 0;
+}
+
+/* ── 템플릿 2 ── */
+.note-create-paper.template-2 .note-create-title-input {
+  margin-top: -3px;
+  padding-left: 12px;
+}
+
+.note-create-paper.template-2 .note-create-content-editor {
+  padding-top: 26px;
+  padding-left: 20px;
+}
+
+/* ── 템플릿 3 ── */
+.note-create-paper.template-3 .note-create-title-input {
+  padding-left: 11px;
+  margin-top: -3px;
+}
+
+.note-create-paper.template-3 .note-create-content-editor {
+  padding-left: 10px;
+}
+
+/* ── 템플릿 4 ── */
+.note-create-paper.template-4 .note-create-title-input {
+  padding-left: 8px;
+  margin-top: -3px;
+}
+
+.note-create-paper.template-4 .note-create-content-editor {
+  padding-left: 15px !important;
+}
+
+/* ── 템플릿 5 ── */
+.note-create-paper.template-5 .note-create-title-input {
+  padding-top: 8px;
+}
+
+.note-create-paper.template-5 .note-create-content-editor {
+  padding-left: 4px !important;
+}
+
+/* ── 템플릿 6 ── */
+.note-create-paper.template-6 .note-create-title-input {
+  padding-left: 8px;
+  margin-top: -3px;
+}
+
+.note-create-paper.template-6 .note-create-content-editor {
+  padding-left: 10px;
+  padding-top: 3px;
+}
+
+.note-create-paper.active {
+    box-shadow:
+        0 0 0 3px rgba(62, 74, 62, 0.14),
+        0 12px 28px rgba(62, 74, 62, 0.18);
+}
+
+.note-create-title-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #2f392f;
+    margin-bottom: 18px;
+    padding-left: 5px;
+    padding-top: 15px;
+}
+
+.note-create-title-input::placeholder {
+    color: #8d8a80;
+}
+
+.note-create-content-input {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1.9;
+  color: #3E4A3E;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  overflow-y: hidden; /* 노트 안에서 스크롤되게 하려면 auto로 변환 */
+  overflow-x: hidden;
+}
+
+.note-create-content-input::placeholder {
+    color: #9a988f;
+}
+
+.note-create-add-page-row {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 0 12px;
+  box-sizing: border-box;
+}
+
+.note-create-add-page-bar {
+    width: 860px;
+    height: 54px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #efe8d8 0%, #e1d7bf 100%);
+    border: 2px dashed #c6b99e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.note-create-add-page-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(62, 74, 62, 0.12);
+}
+
+.note-create-add-page-icon {
+    font-size: 36px;
+    font-weight: 700;
+    color: #7d5a3c;
+    line-height: 1;
+}
+
+.note-create-toolbar {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    background-color: #f5f4ed;
+    border: 1px solid #d8ccb2;
+    border-radius: 20px;
+    box-shadow: 0 10px 24px rgba(62, 74, 62, 0.08);
+}
+
+.note-create-toolbar button {
+    width: 52px;
+    height: 52px;
+    border: 1px solid #d4c6a8;
+    border-radius: 14px;
+    background-color: #fffdf8;
+    color: #3E4A3E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.note-create-toolbar button:hover {
+    transform: translateY(-1px);
+    background-color: #ebe4d3;
+    border-color: #c4b491;
+}
+
+.note-create-toolbar button svg {
+    width: 22px;
+    height: 22px;
+}
+
+.note-create-sidebar {
+    transition: transform 0.24s ease;
+}
+
+.main.note-create-main {
+  min-width: max-content;
+}
+
+.note-create-autosave-indicator {
+  position: fixed;
+  left: 58%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+  z-index: 300;
+  backdrop-filter: blur(2px);
+}
+
+/* 저장하지 않고 나갔을 때 팝업 창 */
+.note-create-leave-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(62, 74, 62, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 400;
+}
+
+.note-create-leave-modal {
+  width: 420px;
+  background-color: #f5f4ed;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+}
+
+.note-create-leave-modal h3 {
+  margin: 0 0 10px;
+  color: #3e4a3e;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.note-create-leave-modal p {
+  margin: 0 0 20px;
+  color: #5b5b5b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.note-create-leave-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.note-create-leave-modal-actions button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.note-create-leave-modal-actions button:nth-child(1) {
+  background-color: #7d5a3c;
+  color: #ffffff;
+}
+
+.note-create-leave-modal-actions button:nth-child(2) {
+  background-color: #e8e1cf;
+  color: #3e4a3e;
+}
+
+.note-create-leave-modal-actions button:nth-child(3) {
+  background-color: #ece9e0;
+  color: #3e4a3e;
+}
+
+/* 툴바 이미지 css */
+.note-create-image-list {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 14px;
+  position: relative;
+  z-index: 15;
+}
+
+.note-create-inline-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 420px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+/* 이미지 선택 상태 css */
+.note-create-inline-image.selected {
+  outline: 3px solid #ff7482;
+  outline-offset: 2px;
+}
+
+.note-create-image-item {
+  position: relative;
+  margin: 0 0 14px;
+  max-width: 100%;
+  align-self: flex-start;
+  z-index: 15;
+}
+
+.note-create-image-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  cursor: ew-resize;
+}
+
+.note-create-image-resize-handle.left {
+  left: -6px;
+}
+
+.note-create-image-resize-handle.right {
+  right: -6px;
+}
+
+.note-create-toolbar-wrap {
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+  z-index: 100;
+}
+
+.note-create-toolbar {
+  position: relative;
+  z-index: 2;
+}
+
+.note-create-text-toolbar {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 12px);
+  z-index: 10;
+
+  width: 160px;
+  padding: 12px;
+  border: 1px solid #d8ccb2;
+  border-radius: 18px;
+  background-color: #f5f4ed;
+  box-shadow: 0 10px 24px rgba(62, 74, 62, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(8px) scale(0.98);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+
+.note-create-text-toolbar.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+.note-create-text-toolbar button {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #d4c6a8;
+  border-radius: 12px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 정렬 버튼 3개를 한 줄에 나란히 배치 */
+.note-create-align-group {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.note-create-align-group button {
+  flex: 1;
+  width: auto;        /* width: 100% 오버라이드 */
+  height: 52px !important;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-create-align-group button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.note-create-text-toolbar button.active,
+.note-create-toolbar button.active {
+  background-color: #ebe4d3;
+  border-color: #bda67d;
+}
+
+.note-create-text-tool-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #5f5b50;
+}
+
+.note-create-text-tool-field input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.note-create-fontsize-buttons button {
+  min-width: 46px;
+  height: 34px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.note-create-fontsize-buttons button.active {
+  background-color: #ebe4d3;
+  border-color: #bda67d;
+}
+
+.note-create-fontsize-compact {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+}
+
+.note-create-fontsize-compact button {
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.note-create-fontsize-current {
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.note-create-fontsize-reset {
+  width: 100%;
+  height: 36px;
+  margin-top: 8px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.note-create-editor-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.note-create-editor-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.note-create-editor-wrap,
+.note-create-editor-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+.note-create-content-editor.ProseMirror {
+  height: 100%;
+  overflow: hidden;
+}
+
+.note-create-content-editor,
+.note-create-content-editor.ProseMirror,
+.note-create-content-editor:focus,
+.note-create-content-editor:focus-visible,
+.note-create-content-editor.ProseMirror-focused {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+.note-create-content-editor {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  color: #3E4A3E;
+  font-size: 20px;
+  line-height: 1.9;
+  word-break: break-word;
+
+  padding-left: 0px;
+  padding-right: 0px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  white-space: pre-wrap;
+}
+
+.note-create-content-editor p {
+  margin: 0 0 12px;
+}
+
+.note-create-content-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9a988f;
+  pointer-events: none;
+  height: 0;
+
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+
+.note-create-text-tool-field input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.note-create-fontsize-compact {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+}
+
+.note-create-fontsize-compact button {
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.note-create-fontsize-compact button:hover,
+.note-create-fontsize-reset:hover {
+  background-color: #ebe4d3;
+  border-color: #bda67d;
+}
+
+.note-create-fontsize-current {
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.note-create-fontsize-reset {
+  width: 100%;
+  height: 36px;
+  margin-top: 8px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 그리기 canvas 오버레이 */
+.note-create-draw-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.note-create-draw-canvas.active {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+/* 그리기 툴바 패널 */
+.note-create-draw-toolbar {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 12px);
+  z-index: 110;
+
+  width: 160px;
+  padding: 12px;
+  border: 1px solid #d8ccb2;
+  border-radius: 18px;
+  background-color: #f5f4ed;
+  box-shadow: 0 10px 24px rgba(62, 74, 62, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(8px) scale(0.98);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+
+.note-create-draw-toolbar.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+.note-create-draw-tool-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #5f5b50;
+}
+
+.note-create-draw-tool-field input[type="color"] {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d4c6a8;
+  border-radius: 10px;
+  background-color: #fffdf8;
+  padding: 2px 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.note-create-draw-size-slider {
+  width: 100%;
+  accent-color: #7d5a3c;
+  cursor: pointer;
+}
+
+.note-create-draw-toolbar button {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #d4c6a8;
+  border-radius: 12px;
+  background-color: #fffdf8;
+  color: #3E4A3E;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.note-create-draw-toolbar button.active {
+  background-color: #ebe4d3;
+  border-color: #bda67d;
+}
+
+.note-create-draw-canvas.toolbar-open {
+  pointer-events: none;
+}
+
+.note-create-draw-toolbar button.note-create-draw-clear-btn {
+  background-color: #fce7e7;
+  border-color: #e0b8b8;
+  color: #8b3a3a;
+}
+
+.note-create-draw-toolbar button.note-create-draw-clear-btn:hover {
+  background-color: #f5d8d8;
+}
+
+.note-create-editor-content img,
+.note-create-content-editor img {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 8px;
+}
+
+/* 위쪽 모서리 핸들 2개 숨기기 */
+[data-resize-image-ui="resize-handle"][style*="top: -4px"] {
+  display: none !important;
+}
+
+/* 아래쪽 핸들 2개를 좌우 중앙으로 이동 + cursor 변경 */
+[data-resize-image-ui="resize-handle"][style*="bottom: -4px"] {
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  cursor: ew-resize !important;
+  width: 6px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.note-create-text-overlay {
+  position: absolute;
+  z-index: 35;
+  min-width: 20px;
+  min-height: 30px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 2px 4px;
+  box-sizing: border-box;
+
+  color: #3e4a3e;
+  font-size: 20px;
+  line-height: 1.9;
+  word-break: break-word;
+  white-space: pre-wrap;
+
+  background: transparent;
+  outline: none;
+  pointer-events: none;
+}
+
+[data-resize-image-ui="position-controller"] {
+  top: 12px !important;
+  bottom: auto !important;
+}
+
+/* 자유 배치 이미지 오버레이 */
+.note-create-image-overlay {
+  position: absolute;
+  z-index: 30;
+  cursor: grab;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: border-color 0.15s ease;
+}
+
+.note-create-image-overlay:hover {
+  border-color: rgba(125, 90, 60, 0.3);
+}
+
+.note-create-image-overlay.selected {
+  border-color: rgba(125, 90, 60, 0.6);
+}
+
+.note-create-image-overlay:active {
+  cursor: grabbing;
+}
+
+.note-create-image-overlay-resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 14px;
+  height: 14px;
+  background-color: #7d5a3c;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  z-index: 31;
+}
+
+.note-create-image-delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #c6b99e;
+  border-radius: 50%;
+  background-color: #fffdf8;
+  color: #8b3a3a;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 31;
+  box-shadow: 0 2px 6px rgba(62, 74, 62, 0.12);
+}
+
+.note-create-image-delete-btn:hover {
+  background-color: #fce7e7;
+  border-color: #e0b8b8;
+}
+
+.note-view-image-overlay {
+  position: absolute;
+  z-index: 5;
+}
+
+.note-view-image-overlay .note-view-inline-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+@media (max-width: 1200px) {
+  .note-create-content-section.content {
+    padding: 4px 0 16px;
+  }
+
+  .note-create-topbar {
+    gap: 12px;
+  }
+
+  .note-create-page-indicator {
+    font-size: 16px;
+  }
+
+  .note-create-toolbar {
+    top: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .note-create-workspace {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .note-create-paper {
+    width: 860px;
+    min-width: 860px;
+    min-height: 1180px;
+    height: auto;
+    box-sizing: border-box;
+  }
+
+  .note-create-toolbar {
+    position: sticky;
+    top: 24px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: auto;
+  }
+
+  .note-create-add-page-bar {
+    width: 860px;
+    height: 48px;
+    align-self: flex-start;
+  }
+
+  .note-create-toolbar button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .note-create-add-page-row {
+    padding: 0;
+  }
+
+  .main.note-create-main {
+    min-width: max-content;
+    padding: 35px 36px 35px 22px;
+  }
+}

@@ -1,0 +1,113 @@
+.create-note-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(62, 74, 62, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.create-note-modal {
+  position: relative;
+  width: 480px; /* 창 너비 */
+  min-height: 450px; /* 창 높이 */
+  background: #f5f4ed;
+  border: 1px solid #cfc8b5;
+  border-radius: 10px;
+  padding: 42px 28px 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.create-note-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 38px;
+  font-weight: 700;
+  color: #3e4a3e;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.create-note-title {
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #3e4a3e;
+  border-bottom: 2px solid #bfc3ad;
+}
+
+.create-note-template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  justify-items: center;
+  margin-top: 8px;
+}
+
+.template-card {
+  position: relative;
+  width: 95px;
+  height: 130px;
+  border: 1px solid #cfc8b5;
+  background: #fff;
+  border-radius: 4px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.template-card:hover {
+  transform: translateY(-2px);
+  border-color: #a99d7d;
+}
+
+.template-card.selected {
+  border: 2px solid #3e4a3e;
+  box-shadow: 0 0 0 2px rgba(62, 74, 62, 0.12);
+}
+
+.template-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+}
+
+.create-note-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #3e4a3e;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+.create-note-next-button {
+  min-width: 80px;
+  height: 38px;
+  border: 2px solid #c6b99e;
+  border-radius: 6px;
+  background: #e8e8e8;
+  color: #3e4a3e;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.create-note-next-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.create-note-next-button:hover:not(:disabled) {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+  border-color: #3e4a3e;
+}
