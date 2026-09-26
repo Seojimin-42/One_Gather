@@ -1,9 +1,12 @@
 package com.capstone.backend.service;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import java.util.Map;
 
 @Service
 public class AIService {
@@ -14,13 +17,22 @@ public class AIService {
         this.chatClient = chatClientBuilder.build();
     }
 
-    public Flux<String> generateStreamText(String question) {
+    public Flux<String> generateStreamText(String question, String role) {
+
+        SystemPromptTemplate systemTemplate =
+                new SystemPromptTemplate("""
+                            너는 One Gather의 AI 학습 도우미야.
+                            현재 역할은 {role}이야.
+                            사용자의 학습 질문에 친절하고 이해하기 쉽고 간단하게 답변해줘.
+                            너무 장황하지 않게 핵심 내용을 중심으로 설명해줘.
+                        """);
+        
+        String systemPrompt = systemTemplate.render(
+                Map.of("role", role)
+        );
+
         return this.chatClient.prompt()
-                .system("""
-                        너는 One Gather의 AI 학습 도우미야.
-                        사용자의 학습 질문에 친절하고 이해하기 쉽고 간단하게 답변해줘.
-                        너무 장황하지 않게 핵심 내용을 중심으로 설명해줘.
-                        """)
+                .system(systemPrompt)
                 .user(question)
                 .options(OpenAiChatOptions.builder()
                         .temperature(0.3)

@@ -23,10 +23,16 @@ const AI_Assistant = () => {
 
     const [messages, setMessages] = useState<Message[]>([]);
 
-    const handleSend = async () => {
-        if (!question.trim()) return;
+    const ROLE_SUMMARY = "현재 노트를 핵심 위주로 요약하는 학습 도우미";
+    const ROLE_QUESTION = "현재 노트를 바탕으로 사용자의 질문에 답변하는 학습 도우미";
+    const ROLE_FREE = "일반적인 학습 질문에 친절하고 간단하게 답변하는 학습 도우미";
 
-        const currentQuestion = question;
+    const [selectedRole, setSelectedRole] = useState(ROLE_FREE);
+
+    const handleSend = async (role: string, message: string = question) => {
+        if (!message.trim()) return;
+
+        const currentQuestion = message;
 
         setMessages((prev) => [
             ...prev,
@@ -39,7 +45,7 @@ const AI_Assistant = () => {
 
         try {
             const response = await fetch(
-                `/api/ai/chat-stream-model?question=${encodeURIComponent(currentQuestion)}`,
+                `/api/ai/chat-stream-model?question=${encodeURIComponent(currentQuestion)}&role=${encodeURIComponent(role)}`,
                 {
                     method: "POST",
                 }
@@ -61,7 +67,6 @@ const AI_Assistant = () => {
 
                 setMessages((prev) => {
                     const updated = [...prev];
-
                     const lastIndex = updated.length - 1;
 
                     updated[lastIndex] = {
@@ -70,8 +75,9 @@ const AI_Assistant = () => {
                     };
 
                     return updated;
-                })
+                });
             }
+
         } catch (error) {
             console.error("AI 요청 실패:", error);
             
@@ -88,6 +94,8 @@ const AI_Assistant = () => {
             });
         } finally {
             setIsLoading(false);
+
+            setSelectedRole(ROLE_FREE); // 질문 한 번 끝나면 다시 기본 자유 질문 모드
         }
     };
 
@@ -126,12 +134,23 @@ const AI_Assistant = () => {
                                 </div>
 
                                 <div className="ai-chat-menu">
-                                    <button type="button">
+                                    <button 
+                                        type="button"
+                                        onClick={() =>
+                                            handleSend(
+                                                ROLE_SUMMARY,
+                                                "현재 노트의 핵심 내용을 요약해줘."
+                                            )
+                                        }
+                                    >
                                         <img src={summaryIcon} alt="노트 요약"/>
                                         <span>노트 요약</span>
                                     </button>
 
-                                    <button type="button">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setSelectedRole(ROLE_QUESTION)}
+                                    >
                                         <img src={questionIcon} alt="질문하기"/>
                                         <span>질문하기</span>
                                     </button>
@@ -172,12 +191,16 @@ const AI_Assistant = () => {
                     <div className="ai-chat-input">
                         <input
                             type="text"
-                            placeholder="질문을 입력하세요"
+                            placeholder={
+                                selectedRole === ROLE_QUESTION
+                                    ? "현재 노트에 대해 질문해보세요"
+                                    : "질문을 입력하세요"
+                            }
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                    handleSend();
+                                    handleSend(selectedRole);
                                 }
                             }}
                         />
@@ -185,7 +208,7 @@ const AI_Assistant = () => {
                         <button 
                             type="button"
                             className="ai-chat-send-button"
-                            onClick={handleSend}
+                            onClick={() => handleSend(selectedRole)}
                         >
                             <img src={enterIcon} alt="전송" />
                         </button>
