@@ -9,7 +9,11 @@ import enterIcon from "../assets/icon/enter.png";
 
 import "../styles/AI_Assistant.css";
 
-const AI_Assistant = () => {
+type AIAssistantProps = {
+    noteContent: string;
+};
+
+const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -45,7 +49,7 @@ const AI_Assistant = () => {
 
         try {
             const response = await fetch(
-                `/api/ai/chat-stream-model?question=${encodeURIComponent(currentQuestion)}&role=${encodeURIComponent(role)}`,
+                `/api/ai/chat-stream-model?question=${encodeURIComponent(currentQuestion)}&role=${encodeURIComponent(role)}&noteContent=${encodeURIComponent(noteContent)}`,
                 {
                     method: "POST",
                 }

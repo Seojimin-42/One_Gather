@@ -8,6 +8,8 @@ import "../styles/MainPage.css";
 import "../styles/NoteCreatePage.css";
 import "../styles/NoteViewPage.css";
 
+import AI_Assistant from "../components/AI_Assistant";
+
 import logo from "../assets/logo.png";
 import sidebarBook from "../assets/icon/sidebar_book.png";
 
@@ -203,6 +205,35 @@ function NoteViewPage() {
     const selectedTemplateImage = templateMap[templateId] ?? note1;
     const selectedTemplateNum = templateId.replace("note", "");
 
+    const stripHtml = (html: string) => {
+      return html
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/p>/gi, "\n")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/<[^>]*>/g, "")
+        .trim();
+    };
+
+    const aiNoteContent = pages
+      .map((page, index) => {
+        const mainContent = stripHtml(page.contentHtml ?? "");
+
+        const overlayContent = (page.textOverlays ?? [])
+              .map((overlay) => stripHtml(overlay.html))
+              .filter((text) => text !== "")
+              .join("\n");
+
+        return `
+        [${index + 1}페이지]
+        제목: ${page.title || ""}
+
+        ${mainContent}
+
+        ${overlayContent}`.trim();
+    })
+    .filter((content) => content !== "")
+    .join("\n\n");
+        
     const [isEditing, setIsEditing] = useState(false);
     const [editTool, setEditTool] = useState<"text" | "pen" | null>(null);
     const [isDirty, setIsDirty] = useState(false);
@@ -2057,6 +2088,9 @@ function NoteViewPage() {
                 </div>
               )}
         </main>
+
+        <AI_Assistant noteContent={aiNoteContent}/>
+
       </div>
     </div>
   );

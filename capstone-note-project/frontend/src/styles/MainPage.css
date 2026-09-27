@@ -87,8 +87,8 @@
 }
 
 .search-box {
-  flex: 0 0 1155px !important;
-  width: 1155px !important;
+  flex: 0 0 900px !important;
+  width: 900px !important;
   max-width: none !important;
   min-width: 0;
   background-color: #f5f4ed;
@@ -131,6 +131,41 @@
 .search-icon.is-pressed {
   transform: scale(0.78);
   opacity: 0.6;
+}
+
+.account-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 14px;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+
+  color: #333333;
+  font-size: 24px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  margin-right: 8px;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.account-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.account-button:hover {
+  border-color: #c6b99e;
+  background-color: rgba(198, 185, 158, 0.12);
 }
 
 .topbar-buttons button {

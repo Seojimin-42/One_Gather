@@ -14,7 +14,7 @@ public class AIController {
     private AIService aiService;
 
     @PostMapping("/chat-stream-model")
-    public Flux<String> chatStreamModel(String question, String role){
-        return aiService.generateStreamText(question, role);
+    public Flux<String> chatStreamModel(String question, String role, String noteContent){
+        return aiService.generateStreamText(question, role, noteContent);
     }
 }

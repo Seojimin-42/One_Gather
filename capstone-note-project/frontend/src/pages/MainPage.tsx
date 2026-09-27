@@ -9,8 +9,11 @@ import NoteDetailModal from "../components/NoteDetailModal";
 import CreateNoteModal from "../components/CreateNoteModal";
 import AI_Assistant from "../components/AI_Assistant";
 
+import LoginModal from "../components/LoginModal";
+
 /* 이미지 임포트 */
 import logo from "../assets/logo.png";
+import personIcon from "../assets/icon/person.png";
 import sidebarBook from "../assets/icon/sidebar_book.png";
 
 import likedIcon from "../assets/icon/Liked.png";
@@ -73,7 +76,9 @@ function MainPage() {
   const [isCreateNoteModalOpen, setIsCreateNoteModalOpen] = useState(false);
   const [shareLink, setShareLink] = useState("");
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const MAIN_PAGE_STATE_KEY = "mainPageViewState";
@@ -655,6 +660,19 @@ function MainPage() {
                 alt="검색"
               />
             </div>
+
+            <button
+              type="button"
+              className="account-button"
+              onClick={() => setIsLoginModalOpen(true)}
+            >
+            <img
+              src={personIcon}
+              alt="계정"
+              className="account-icon"
+            />
+            <span>계정</span>
+            </button>
           </div>
 
           <div className="content-wrapper">
@@ -898,10 +916,16 @@ function MainPage() {
               }}
             />
           )}
+
+          {isLoginModalOpen && (
+            <LoginModal
+              onClose={() => setIsLoginModalOpen(false)}
+            />
+          )}
           </section>
           </div>
         </main>
-        <AI_Assistant />
+        <AI_Assistant noteContent="" />
       </div>
     </div>
   );
