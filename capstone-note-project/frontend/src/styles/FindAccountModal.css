@@ -1,0 +1,261 @@
+.find-account-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.28);
+
+  z-index: 2000;
+}
+
+.find-account-modal {
+  position: relative;
+
+  width: 620px;
+  max-width: calc(100vw - 80px);
+
+  padding: 38px 52px 42px;
+
+  background-color: #f8f7f2;
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.find-account-close-button {
+  position: absolute;
+
+  top: 8px;
+  right: 16px;
+
+  border: none;
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 54px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.find-account-logo {
+  display: block;
+
+  width: 300px;
+  height: auto;
+
+  object-fit: contain;
+
+  margin: 0 auto 10px;
+}
+
+.find-account-tabs {
+  display: flex;
+
+  width: 100%;
+
+  gap: 8px;
+
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.find-account-tabs button {
+  flex: 1;
+
+  height: 48px;
+
+  border: 2px solid #3e4a3e;
+  border-radius: 6px;
+
+  background-color: #f8f7f2;
+
+  color: #3e4a3e;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.find-account-tabs button.active {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}
+
+.find-account-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 10px 0 14px;
+
+  background-color: #a89c7d;
+}
+
+.find-method-options {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+
+  margin-bottom: 14px;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+}
+
+.find-method-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  cursor: pointer;
+}
+
+.find-method-options input {
+  cursor: pointer;
+}
+
+.find-account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.find-account-input {
+  width: 100%;
+  height: 44px;
+
+  box-sizing: border-box;
+
+  padding: 0 14px;
+
+  border: 2px solid #4d5d30;
+  border-radius: 6px;
+
+  background-color: #eae9e9;
+
+  color: #3e4a3e;
+
+  font-size: 15px;
+
+  outline: none;
+}
+
+.find-account-input::placeholder {
+  color: #6f765f;
+}
+
+.find-account-input:focus {
+  background-color: #f5f4ed;
+  border-color: #3e4a3e;
+}
+
+.find-account-row {
+  display: flex;
+  gap: 8px;
+}
+
+.find-account-row .find-account-input {
+  flex: 1;
+}
+
+.find-account-confirm-button {
+  width: 95px;
+  height: 44px;
+
+  border: 2px solid #4d5d30;
+  border-radius: 6px;
+
+  background-color: #f8f7f2;
+
+  color: #3e4a3e;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.find-account-confirm-button:hover {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}
+
+.find-account-email-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.find-account-email-row .find-account-input {
+  flex: 1;
+}
+
+.find-account-at {
+  color: #3e4a3e;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.find-account-domain-select {
+  height: 44px;
+
+  padding: 0 10px;
+
+  border: 2px solid #4d5d30;
+  border-radius: 6px;
+
+  background-color: #f8f7f2;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+
+  outline: none;
+  cursor: pointer;
+}
+
+.custom-domain-input {
+  margin-top: 0;
+}
+
+.verification-input {
+  margin-top: 0;
+}
+
+.find-account-verify-button {
+  width: 100%;
+  height: 48px;
+
+  border: 2px solid #3e4a3e;
+  border-radius: 6px;
+
+  background-color: #f8f7f2;
+
+  color: #3e4a3e;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.find-account-verify-button:hover {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}

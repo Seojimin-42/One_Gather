@@ -1,0 +1,168 @@
+.signup-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.28);
+
+  z-index: 2000;
+}
+
+.signup-modal {
+  position: relative;
+
+  width: 780px;
+  max-width: calc(100vw - 80px);
+
+  padding: 32px 90px 50px;
+
+  background-color: #f8f7f2;
+  border-radius: 20px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.signup-logo {
+  display: block;
+
+  width: 400px;
+  height: auto;
+
+  object-fit: contain;
+
+  margin: 0 auto 5px;
+
+  transform: translateY(10px);
+}
+
+.signup-close-button {
+  position: absolute;
+
+  top: 10px;
+  right: 14px;
+
+  border: none;
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 70px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+
+  width: calc(100% + 40px);
+  margin-left: -20px;
+
+  margin-top: 20px;
+}
+
+.signup-input {
+  width: 100%;
+  height: 58px;
+
+  box-sizing: border-box;
+
+  padding: 0 18px;
+
+  border: 3px solid #4d5d30;
+  border-radius: 10px;
+
+  background-color: #eae9e9;
+
+  color: #3e4a3e;
+
+  font-size: 18px;
+
+  outline: none;
+}
+
+.signup-input + .signup-input {
+  margin-top: 12px;
+}
+
+.signup-input::placeholder {
+  color: #4d5d30;
+}
+
+.signup-input:focus {
+  border-color: #3e4a3e;
+  background-color: #f5f4ed;
+}
+
+.signup-nickname-row {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 12px;
+}
+
+.signup-nickname-row .signup-input {
+  flex: 1;
+}
+
+.signup-check-button {
+  width: 135px;
+
+  border: 3px solid #4d5d30;
+  border-radius: 10px;
+
+  background-color: #f5f4ed;
+
+  color: #3e4a3e;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.signup-check-button:hover {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}
+
+.signup-nickname-row + .signup-input {
+  margin-top: 12px;
+}
+
+.signup-submit-button {
+  width: 100%;
+  height: 58px;
+
+  margin-top: 22px;
+
+  border: 3px solid #3e4a3e;
+  border-radius: 10px;
+
+  background-color: #f5f4ed;
+
+  color: #3e4a3e;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.signup-submit-button:hover {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}

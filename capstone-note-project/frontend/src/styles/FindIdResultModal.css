@@ -1,0 +1,139 @@
+.find-id-result-backdrop {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.28);
+
+  z-index: 2000;
+}
+
+.find-id-result-modal {
+  position: relative;
+
+  width: 520px;
+  max-width: calc(100vw - 80px);
+
+  padding: 34px 42px 30px;
+
+  background-color: #f8f7f2;
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.find-id-result-close {
+  position: absolute;
+
+  top: 8px;
+  right: 14px;
+
+  border: none;
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 54px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.find-id-result-logo {
+  display: block;
+
+  width: 260px;
+  height: auto;
+
+  object-fit: contain;
+
+  margin: 0 auto 8px;
+}
+
+.find-id-result-content {
+  transform: translateY(-10px);
+}
+
+.find-id-result-check {
+  display: block;
+
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  margin: 18px auto 14px;
+}
+
+.find-id-result-message {
+  text-align: center;
+
+  color: #4d5d30;
+}
+
+.find-id-result-message p {
+  margin: 4px 0;
+
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.find-id-result-message strong {
+  display: block;
+
+  margin: 4px 0;
+
+  color: #3e4a3e;
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.find-id-result-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 22px 0 14px;
+
+  background-color: #a89c7d;
+}
+
+.find-id-result-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.find-id-result-actions button {
+  flex: 1;
+
+  height: 44px;
+
+  border: 2px solid #3e4a3e;
+  border-radius: 6px;
+
+  background-color: #f8f7f2;
+
+  color: #3e4a3e;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.find-id-result-actions button:hover {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
+}

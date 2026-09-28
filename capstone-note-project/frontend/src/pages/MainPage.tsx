@@ -10,6 +10,9 @@ import CreateNoteModal from "../components/CreateNoteModal";
 import AI_Assistant from "../components/AI_Assistant";
 
 import LoginModal from "../components/LoginModal";
+import SignUpModal from "../components/SignUpModal";
+import FindAccountModal from "../components/FindAccountModal";
+import FindIdResultModal from "../components/FindIdResultModal";
 
 /* 이미지 임포트 */
 import logo from "../assets/logo.png";
@@ -78,6 +81,9 @@ function MainPage() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  const [isFindAccountModalOpen, setIsFindAccountModalOpen] = useState(false);
+  const [isFindIdResultModalOpen, setIsFindIdResultModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -920,8 +926,48 @@ function MainPage() {
           {isLoginModalOpen && (
             <LoginModal
               onClose={() => setIsLoginModalOpen(false)}
+              onSignUp={() => {
+                setIsLoginModalOpen(false);
+                setIsSignUpModalOpen(true);
+              }}
+              onFindAccount={() => {
+                setIsLoginModalOpen(false);
+                setIsFindAccountModalOpen(true);
+              }}
             />
           )}
+
+          {isSignUpModalOpen && (
+            <SignUpModal
+              onClose={() => setIsSignUpModalOpen(false)}
+            />
+          )}
+
+          {isFindAccountModalOpen && (
+            <FindAccountModal
+              onClose={() => setIsFindAccountModalOpen(false)}
+              onIdFound={() => {
+                setIsFindAccountModalOpen(false);
+                setIsFindIdResultModalOpen(true);
+              }}
+            />
+          )}
+
+          {isFindIdResultModalOpen && (
+            <FindIdResultModal
+              onClose={() => setIsFindAccountModalOpen(false)}
+              userId="USER1234"
+              onFindPassword={() => {
+                setIsFindIdResultModalOpen(false);
+                setIsFindAccountModalOpen(true);
+              }}
+              onLogin={() => {
+                setIsFindIdResultModalOpen(false);
+                setIsLoginModalOpen(true);
+              }}
+            />
+          )}
+          
           </section>
           </div>
         </main>

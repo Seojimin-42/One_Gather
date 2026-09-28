@@ -7,9 +7,11 @@ import "../styles/LoginModal.css";
 
 type LoginModalProps = {
     onClose: () => void;
+    onSignUp: () => void;
+    onFindAccount: () => void;
 };
 
-function LoginPage({ onClose }: LoginModalProps) {
+function LoginModal({ onClose, onSignUp, onFindAccount}: LoginModalProps) {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -92,12 +94,15 @@ function LoginPage({ onClose }: LoginModalProps) {
                     <div className="login-links">
                         <button
                             type="button"
-                            onClick={() => navigate("/signup")}
+                            onClick={onSignUp}
                         >
                             회원가입
                         </button>
 
-                        <button type="button">
+                        <button 
+                            type="button"
+                            onClick={onFindAccount}
+                        >
                             아이디/비밀번호 찾기
                         </button>
                     </div>
@@ -107,4 +112,4 @@ function LoginPage({ onClose }: LoginModalProps) {
     );
 }
 
-export default LoginPage;
+export default LoginModal;
