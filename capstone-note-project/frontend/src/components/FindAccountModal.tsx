@@ -6,9 +6,10 @@ import logo from "../assets/logo.png";
 type FindAccountModalProps = {
   onClose: () => void;
   onIdFound: () => void;
+  onPasswordVerified: () => void;
 };
 
-function FindAccountModal({ onClose, onIdFound }: FindAccountModalProps) {
+function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccountModalProps) {
     const [activeTab, setActiveTab] = useState<"id" | "password">("id");
     const [findMethod, setFindMethod] = useState<"phone" | "email">("phone");
     
@@ -25,7 +26,7 @@ function FindAccountModal({ onClose, onIdFound }: FindAccountModalProps) {
         emailDomain === "custom"
         ? `${emailId}@${customDomain}`
         : emailDomain
-            ? `${emailId}@{emailDomain}`
+            ? `${emailId}@${emailDomain}`
             : "";
 
     const handleSendVerification = () => {
@@ -53,6 +54,8 @@ function FindAccountModal({ onClose, onIdFound }: FindAccountModalProps) {
 
         if (activeTab === "id") {
             onIdFound();
+        } else {
+            onPasswordVerified();
         }
     };
     

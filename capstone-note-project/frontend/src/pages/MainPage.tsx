@@ -13,6 +13,7 @@ import LoginModal from "../components/LoginModal";
 import SignUpModal from "../components/SignUpModal";
 import FindAccountModal from "../components/FindAccountModal";
 import FindIdResultModal from "../components/FindIdResultModal";
+import ResetPasswordModal from "../components/ResetPasswordModal";
 
 /* 이미지 임포트 */
 import logo from "../assets/logo.png";
@@ -84,6 +85,7 @@ function MainPage() {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [isFindAccountModalOpen, setIsFindAccountModalOpen] = useState(false);
   const [isFindIdResultModalOpen, setIsFindIdResultModalOpen] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -950,19 +952,33 @@ function MainPage() {
                 setIsFindAccountModalOpen(false);
                 setIsFindIdResultModalOpen(true);
               }}
+              onPasswordVerified={() => {
+                setIsFindAccountModalOpen(false);
+                setIsResetPasswordModalOpen(true);
+              }}
             />
           )}
 
           {isFindIdResultModalOpen && (
             <FindIdResultModal
-              onClose={() => setIsFindAccountModalOpen(false)}
+              onClose={() => setIsFindIdResultModalOpen(false)}
               userId="USER1234"
               onFindPassword={() => {
                 setIsFindIdResultModalOpen(false);
-                setIsFindAccountModalOpen(true);
+                setIsResetPasswordModalOpen(true);
               }}
               onLogin={() => {
                 setIsFindIdResultModalOpen(false);
+                setIsLoginModalOpen(true);
+              }}
+            />
+          )}
+
+          {isResetPasswordModalOpen && (
+            <ResetPasswordModal
+              onClose={() => setIsResetPasswordModalOpen(false)}
+              onPasswordChanged={() => {
+                setIsResetPasswordModalOpen(false);
                 setIsLoginModalOpen(true);
               }}
             />

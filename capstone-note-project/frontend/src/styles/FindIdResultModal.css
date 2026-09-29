@@ -17,13 +17,13 @@
 .find-id-result-modal {
   position: relative;
 
-  width: 520px;
+  width: 600px;
   max-width: calc(100vw - 80px);
 
-  padding: 34px 42px 30px;
+  padding: 34px 50px 40px;
 
   background-color: #f8f7f2;
-  border-radius: 18px;
+  border-radius: 20px;
 
   box-sizing: border-box;
 
@@ -33,7 +33,7 @@
 .find-id-result-close {
   position: absolute;
 
-  top: 8px;
+  top: 10px;
   right: 14px;
 
   border: none;
@@ -41,7 +41,7 @@
 
   color: #3e4a3e;
 
-  font-size: 54px;
+  font-size: 70px;
   line-height: 1;
 
   cursor: pointer;
@@ -50,7 +50,7 @@
 .find-id-result-logo {
   display: block;
 
-  width: 260px;
+  width: 400px;
   height: auto;
 
   object-fit: contain;
@@ -65,12 +65,12 @@
 .find-id-result-check {
   display: block;
 
-  width: 58px;
-  height: 58px;
+  width: 70px;
+  height: 70px;
 
   object-fit: contain;
 
-  margin: 18px auto 14px;
+  margin: 0px auto 20px;
 }
 
 .find-id-result-message {
@@ -80,20 +80,20 @@
 }
 
 .find-id-result-message p {
-  margin: 4px 0;
+  margin: 5px 0;
 
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
 }
 
 .find-id-result-message strong {
   display: block;
 
-  margin: 4px 0;
+  margin: 5px 0;
 
   color: #3e4a3e;
 
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 800;
 }
 
@@ -114,7 +114,7 @@
 .find-id-result-actions button {
   flex: 1;
 
-  height: 44px;
+  height: 52px;
 
   border: 2px solid #3e4a3e;
   border-radius: 6px;
@@ -123,7 +123,7 @@
 
   color: #3e4a3e;
 
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
 
   cursor: pointer;
