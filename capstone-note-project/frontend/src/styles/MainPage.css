@@ -206,7 +206,7 @@
   padding: 18px 24px 24px;
 }
 
-.content h2 {
+.content > h2 {
   width: calc(100% - 10px);
   margin: 0 auto 42px;
   padding: 10px 0px;

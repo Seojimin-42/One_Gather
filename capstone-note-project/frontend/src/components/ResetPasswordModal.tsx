@@ -22,7 +22,7 @@ function ResetPasswordModal({
             return;
         }
 
-        if (!newPassword || !confirmPassword) {
+        if (newPassword !== confirmPassword) {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
@@ -87,7 +87,8 @@ function ResetPasswordModal({
                     <div className="reset-password-row">
                         <input
                             type="password"
-                            className="새 비밀번호를 확인합니다."
+                            className="reset-password-input"
+                            placeholder="새 비밀번호를 확인합니다."
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />

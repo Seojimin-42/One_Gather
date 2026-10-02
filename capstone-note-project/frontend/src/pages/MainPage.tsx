@@ -14,6 +14,7 @@ import SignUpModal from "../components/SignUpModal";
 import FindAccountModal from "../components/FindAccountModal";
 import FindIdResultModal from "../components/FindIdResultModal";
 import ResetPasswordModal from "../components/ResetPasswordModal";
+import FindPWResultModal from "../components/FindPWResultModal";
 
 /* 이미지 임포트 */
 import logo from "../assets/logo.png";
@@ -86,6 +87,7 @@ function MainPage() {
   const [isFindAccountModalOpen, setIsFindAccountModalOpen] = useState(false);
   const [isFindIdResultModalOpen, setIsFindIdResultModalOpen] = useState(false);
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+  const [isFindPWResultModalOpen, setIsFindPWResultModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -979,6 +981,16 @@ function MainPage() {
               onClose={() => setIsResetPasswordModalOpen(false)}
               onPasswordChanged={() => {
                 setIsResetPasswordModalOpen(false);
+                setIsFindPWResultModalOpen(true);
+              }}
+            />
+          )}
+
+          {isFindPWResultModalOpen && (
+            <FindPWResultModal
+              onClose={() => setIsFindPWResultModalOpen(false)}
+              onLogin={() => {
+                setIsFindPWResultModalOpen(false);
                 setIsLoginModalOpen(true);
               }}
             />
