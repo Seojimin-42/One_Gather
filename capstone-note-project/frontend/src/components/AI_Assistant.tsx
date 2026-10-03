@@ -13,6 +13,12 @@ type AIAssistantProps = {
     noteContent: string;
 };
 
+type StudyReview = {
+    keywords: string[];
+    keyPoints: string[];
+    questions: string[];
+}
+
 const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +44,7 @@ const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
 
         const currentQuestion = message;
 
+        // 메시지 출력
         setMessages((prev) => [
             ...prev,
             { role: "user", content: currentQuestion },
@@ -103,6 +110,90 @@ const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
         }
     };
 
+    const handleReviewNote = async () => {
+
+        if (!noteContent.trim()) {
+            handleSend(
+                ROLE_QUESTION,
+                "현재 노트를 복습할 수 있게 정리해줘."
+            );
+            return;
+        }
+
+        setMessages((prev) => [
+            ...prev,
+            {
+                role: "user",
+                content: "현재 노트를 복습할 수 있게 정리해줘."
+            },
+            {
+                role: "assistant",
+                content: ""
+            }
+        ]);
+
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(
+                `/api/ai/review-note?noteContent=${encodeURIComponent(noteContent)}`,
+                {
+                    method: "POST",
+                }
+            );
+
+            if(!response.ok) {
+                throw new Error("복습 내용을 불러오지 못했습니다.");
+            }
+
+            const data: StudyReview = await response.json();
+
+            const reviewContent = 
+            
+            `핵심 키워드
+${data.keywords.join(", ")}
+
+핵심 포인트
+${data.keyPoints.map((point) => `● ${point}`).join("\n")}
+
+복습 질문
+${data.questions
+    .map((question, index) => `${index + 1}. ${question}`)
+    .join("\n")}
+            
+            `.trim();
+
+            setMessages((prev) => {
+                const updated = [...prev];
+                const lastIndex = updated.length - 1;
+
+                updated[lastIndex] = {
+                    role: "assistant",
+                    content: reviewContent,
+                };
+
+                return updated;
+            });
+        
+        } catch (error) {
+            console.error("복습 요청 실패:", error);
+
+            setMessages((prev) => {
+                const updated = [...prev];
+                const lastIndex = updated.length - 1;
+
+                updated[lastIndex] = {
+                    role: "assistant",
+                    content: "복습 내용을 불러오는 중 오류가 발생했습니다.",
+                };
+
+                return updated;
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="ai-assistant">
             {isOpen ? (
@@ -153,10 +244,10 @@ const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
 
                                     <button 
                                         type="button"
-                                        onClick={() => setSelectedRole(ROLE_QUESTION)}
+                                        onClick={handleReviewNote}
                                     >
-                                        <img src={questionIcon} alt="질문하기"/>
-                                        <span>질문하기</span>
+                                        <img src={questionIcon} alt="복습하기"/>
+                                        <span>복습하기</span>
                                     </button>
                                 </div>
 
