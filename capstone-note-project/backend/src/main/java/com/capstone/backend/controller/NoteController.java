@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.capstone.backend.dto.ViewPageRequestDto;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 import java.util.Map;
@@ -24,63 +25,149 @@ public class NoteController {
     }
 
     @PostMapping
-    public NoteResponseDto createNote(@RequestBody NoteRequestDto requestDto) {
-        return noteService.createNote(requestDto);
+    public NoteResponseDto createNote(@RequestBody NoteRequestDto requestDto, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException(
+                    "로그인이 필요합니다."
+            );
+        }
+
+        return noteService.createNote(requestDto, userId);
     }
 
     @GetMapping
-    public List<NoteResponseDto> getNotes() {
-        return noteService.getAllNotes();
+    public List<NoteResponseDto> getNotes(HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException(
+                    "로그인이 필요합니다."
+            );
+        }
+
+        return noteService.getAllNotes(userId);
     }
 
     @GetMapping("/{id}")
-    public NoteResponseDto getNoteById(@PathVariable("id") Long id) {
-        return noteService.getNoteById(id);
+    public NoteResponseDto getNoteById(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException(
+                    "로그인이 필요합니다."
+            );
+        }
+
+        return noteService.getNoteById(id, userId);
     }
 
     @PutMapping("/{id}")
     public NoteResponseDto updateNote(@PathVariable("id") Long id,
-                                      @RequestBody NoteRequestDto requestDto) {
-        return noteService.updateNote(id, requestDto);
+                                      @RequestBody NoteRequestDto requestDto,
+                                      HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        return noteService.updateNote(id, userId, requestDto);
     }
 
     @PostMapping("/{id}/view")
     public void updateViewInfo(
             @PathVariable("id") Long id,
-            @RequestBody ViewPageRequestDto requestDto
+            @RequestBody ViewPageRequestDto requestDto,
+            HttpSession httpSession
     ) {
-        noteService.updateViewInfo(id, requestDto.getPage());
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        noteService.updateViewInfo(id, requestDto.getPage(), userId);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable("id") Long id) {
-        noteService.deleteNote(id);
+    public void deleteNote(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        noteService.deleteNote(id, userId);
     }
 
     @GetMapping("/trash")
-    public List<NoteResponseDto> getDeletedNotes() {
-        return noteService.getDeletedNotes();
+    public List<NoteResponseDto> getDeletedNotes(HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        return noteService.getDeletedNotes(userId);
     }
 
     @PutMapping("/{id}/restore")
-    public NoteResponseDto restoreNote(@PathVariable("id") Long id) {
-        return noteService.restoreNote(id);
+    public NoteResponseDto restoreNote(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        return noteService.restoreNote(id, userId);
     }
 
     @DeleteMapping("/{id}/permanent")
-    public void permanentlyDeleteNote(@PathVariable("id") Long id) {
-        noteService.permanentlyDeleteNote(id);
+    public void permanentlyDeleteNote(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if(userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        noteService.permanentlyDeleteNote(id, userId);
     }
 
     @DeleteMapping("/trash/all")
-    public void permanentlyDeleteAllTrashNotes() {
-        noteService.permanentlyDeleteAllTrashNotes();
+    public void permanentlyDeleteAllTrashNotes(HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if(userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        noteService.permanentlyDeleteAllTrashNotes(userId);
     }
 
     // 공유 링크 생성
     @PostMapping("/{id}/share")
-    public Map<String, String> createShareLink(@PathVariable("id") Long id) {
-        String shareId = noteService.createShareLink(id);
+    public Map<String, String> createShareLink(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        String shareId = noteService.createShareLink(id, userId);
+
         return Map.of("shareId", shareId);
     }
 
@@ -92,24 +179,49 @@ public class NoteController {
 
     // 공유 해제
     @DeleteMapping("/{id}/share")
-    public void disableShare(@PathVariable("id") Long id) {
-        noteService.disableShare(id);
+    public void disableShare(@PathVariable("id") Long id, HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        noteService.disableShare(id, userId);
     }
 
     @PutMapping("/{id}/shelf-index")
     public NoteResponseDto updateNoteShelfIndex(
             @PathVariable("id") Long id,
-            @RequestBody Map<String, Long> body) {
+            @RequestBody Map<String, Long> body,
+            HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
         Long shelfIndexId = body.get("shelfIndexId");  // null 허용
-        return noteService.updateNoteShelfIndex(id, shelfIndexId);
+
+        return noteService.updateNoteShelfIndex(id, shelfIndexId, userId);
     }
 
     // 노트 복제 (사본 만들기)
     @PostMapping("/{id}/duplicate")
     public NoteResponseDto duplicateNote(
             @PathVariable("id") Long id,
-            @RequestBody Map<String, Long> body) {
+            @RequestBody Map<String, Long> body,
+            HttpSession httpSession) {
+
+        Long userId = (Long) httpSession.getAttribute("loginUserId");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
         Long targetShelfIndexId = body.get("shelfIndexId");  // null 허용 (분류 없음)
-        return noteService.duplicateNote(id, targetShelfIndexId);
+
+        return noteService.duplicateNote(id, targetShelfIndexId, userId);
     }
 }

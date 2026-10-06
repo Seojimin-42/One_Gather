@@ -26,6 +26,12 @@ import unlikedIcon from "../assets/icon/UnLiked.png";
 import searchIcon from "../assets/icon/search.png"
 import viewDetailsIcon from "../assets/icon/view_details.png"
 
+type LoginUser = {
+  id: number;
+  email: string;
+  nickname: string;
+};
+
 type Note = {
   id: number;
   title: string;
@@ -88,6 +94,14 @@ function MainPage() {
   const [isFindIdResultModalOpen, setIsFindIdResultModalOpen] = useState(false);
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
   const [isFindPWResultModalOpen, setIsFindPWResultModalOpen] = useState(false);
+
+  const [loginUser, setLoginUser] = useState<LoginUser | null>(null);
+
+  const [foundNickname, setFoundNickname] = useState("");
+  const [foundUserId, setFoundUserId] = useState("");
+
+  const [resetEmail, setResetEmail] = useState("");
+  const [findAccountInitialTab, setFindAccountInitialTab] = useState<"id" | "password">("id");
 
   const navigate = useNavigate();
 
@@ -586,7 +600,64 @@ function MainPage() {
         console.error("링크 복사 실패:", error);
         alert("자동 복사에 실패했습니다. 링크를 길게 눌러 직접 복사해주세요.");
     }
-};
+  };
+
+    // 새로고침해도 로그인 상태 복구하도록 /me 호출
+    useEffect(() => {
+      const checkLoginUser = async () => {
+        try {
+            const response = await fetch("/api/users/me", {
+              method: "GET",
+              credentials: "include",
+            });
+
+            if (!response.ok) {
+              setLoginUser(null);
+              return;
+            }
+
+            const user = await response.json();
+
+            setLoginUser(user);
+
+        } catch (error) {
+            console.error("로그인 상태 확인 실패:", error);
+            setLoginUser(null);
+        }
+      };
+
+      checkLoginUser();
+    }, []);
+
+    const handleLogout = async () => {
+      const confirmed = window.confirm(
+        "로그아웃하시겠습니까?"
+      );
+
+      if(!confirmed) {
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/users/logout", {
+          method: "POST",
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          alert("로그아웃에 실패했습니다.");
+          return;
+        }
+
+        setLoginUser(null);
+
+        alert("로그아웃되었습니다.");
+
+      } catch (error) {
+        console.error("로그아웃 오류:", error);
+        alert("서버와 통신 중 오류가 발생했습니다.");
+      }
+  };
 
   return (
     
@@ -674,14 +745,26 @@ function MainPage() {
             <button
               type="button"
               className="account-button"
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => {
+                if (loginUser) {
+                  // 로그인 상태
+                  handleLogout();
+                } else {
+                  // 로그아웃 상태
+                  setIsLoginModalOpen(true);
+                }
+              }}
             >
             <img
               src={personIcon}
               alt="계정"
               className="account-icon"
             />
-            <span>계정</span>
+            <span>
+              {loginUser
+                ? `${loginUser.nickname}님`
+                : "계정"}
+            </span>
             </button>
           </div>
 
@@ -930,11 +1013,15 @@ function MainPage() {
           {isLoginModalOpen && (
             <LoginModal
               onClose={() => setIsLoginModalOpen(false)}
+              onLoginSuccess={(user) => {
+                setLoginUser(user);
+              }}
               onSignUp={() => {
                 setIsLoginModalOpen(false);
                 setIsSignUpModalOpen(true);
               }}
               onFindAccount={() => {
+                setFindAccountInitialTab("id");
                 setIsLoginModalOpen(false);
                 setIsFindAccountModalOpen(true);
               }}
@@ -949,12 +1036,20 @@ function MainPage() {
 
           {isFindAccountModalOpen && (
             <FindAccountModal
+              initialTab={findAccountInitialTab}
               onClose={() => setIsFindAccountModalOpen(false)}
-              onIdFound={() => {
+
+              onIdFound={(nickname, email) => {
+                setFoundNickname(nickname);
+                setFoundUserId(email);
+
                 setIsFindAccountModalOpen(false);
                 setIsFindIdResultModalOpen(true);
               }}
-              onPasswordVerified={() => {
+
+              onPasswordVerified={(email) => {
+                setResetEmail(email);
+
                 setIsFindAccountModalOpen(false);
                 setIsResetPasswordModalOpen(true);
               }}
@@ -963,12 +1058,16 @@ function MainPage() {
 
           {isFindIdResultModalOpen && (
             <FindIdResultModal
+              nickname={foundNickname}
+              userId={foundUserId}
               onClose={() => setIsFindIdResultModalOpen(false)}
-              userId="USER1234"
+
               onFindPassword={() => {
+                setFindAccountInitialTab("password");
                 setIsFindIdResultModalOpen(false);
-                setIsResetPasswordModalOpen(true);
+                setIsFindAccountModalOpen(true);
               }}
+
               onLogin={() => {
                 setIsFindIdResultModalOpen(false);
                 setIsLoginModalOpen(true);
@@ -978,6 +1077,7 @@ function MainPage() {
 
           {isResetPasswordModalOpen && (
             <ResetPasswordModal
+              email={resetEmail}
               onClose={() => setIsResetPasswordModalOpen(false)}
               onPasswordChanged={() => {
                 setIsResetPasswordModalOpen(false);

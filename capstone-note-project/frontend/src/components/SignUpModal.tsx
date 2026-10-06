@@ -13,7 +13,7 @@ function SignUpModal({ onClose }: SignUpModalProps) {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [nickname, setNickname] = useState("");
-    const [phone, setPhone] = useState("");
+    const [phone, setPhone] = useState("010");
 
     const [nicknameChecked, setNicknameChecked] = useState(false);
 
@@ -133,11 +133,6 @@ function SignUpModal({ onClose }: SignUpModalProps) {
     return (
         <div
             className="signup-modal-backdrop"
-            onClick={(e) => {
-                if (e.target === e.currentTarget) {
-                    onClose();
-                }
-            }}
         >
             <div
                 className="signup-modal"
@@ -166,7 +161,14 @@ function SignUpModal({ onClose }: SignUpModalProps) {
                         className="signup-input"
                         placeholder="이메일"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                            setEmail(e.target.value.replace(/\s/g, ""));
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
                     />
 
                     <input
@@ -176,7 +178,29 @@ function SignUpModal({ onClose }: SignUpModalProps) {
                         className="signup-input"
                         placeholder="비밀번호를 입력하세요"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                            setPassword(e.target.value.replace(/\s/g, ""));
+                        }}
+                        onKeyDown={(e) => {
+                            // ctrl + c  복사 키
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+                                const { selectionStart, selectionEnd } = e.currentTarget;
+                                if(selectionStart !== null && selectionEnd !== null && selectionStart !== selectionEnd) {
+                                    e.preventDefault();
+                                    navigator.clipboard.writeText(password.slice(selectionStart, selectionEnd));
+                                }
+                            }
+
+                            // ctrl + x 잘라내기 키
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+                                const { selectionStart, selectionEnd } = e.currentTarget;
+                                if(selectionStart !== null && selectionEnd !== null && selectionStart !== selectionEnd) {
+                                    e.preventDefault();
+                                    navigator.clipboard.writeText(password.slice(selectionStart, selectionEnd));
+                                    setPassword(password.slice(0, selectionStart) + password.slice(selectionEnd));
+                                }
+                            }
+                        }}
                     />
 
                     <input
@@ -186,7 +210,29 @@ function SignUpModal({ onClose }: SignUpModalProps) {
                         className="signup-input"
                         placeholder="비밀번호를 확인합니다."
                         value={passwordConfirm}
-                        onChange={(e) => setPasswordConfirm(e.target.value)}
+                        onChange={(e) => {
+                            setPasswordConfirm(e.target.value.replace(/\s/g, ""));
+                        }}
+                        onKeyDown={(e) => {
+                            // ctrl + c  복사 키
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+                                const { selectionStart, selectionEnd } = e.currentTarget;
+                                if(selectionStart !== null && selectionEnd !== null && selectionStart !== selectionEnd) {
+                                    e.preventDefault();
+                                    navigator.clipboard.writeText(passwordConfirm.slice(selectionStart, selectionEnd));
+                                }
+                            }
+
+                            // ctrl + x 잘라내기 키
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+                                const { selectionStart, selectionEnd } = e.currentTarget;
+                                if(selectionStart !== null && selectionEnd !== null && selectionStart !== selectionEnd) {
+                                    e.preventDefault();
+                                    navigator.clipboard.writeText(passwordConfirm.slice(selectionStart, selectionEnd));
+                                    setPasswordConfirm(passwordConfirm.slice(0, selectionStart) + passwordConfirm.slice(selectionEnd));
+                                }
+                            }
+                        }}
                     />
 
                     <div className="signup-nickname-row">
@@ -197,7 +243,9 @@ function SignUpModal({ onClose }: SignUpModalProps) {
                             maxLength={10}
                             value={nickname}
                             onChange={(e) => {
-                                setNickname(e.target.value);
+                                const value = e.target.value.replace(/\s/g, "");
+
+                                setNickname(value);
                                 setNicknameChecked(false);
                             }}
                         />

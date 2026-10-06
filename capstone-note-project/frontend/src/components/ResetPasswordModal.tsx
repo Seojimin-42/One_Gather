@@ -5,11 +5,13 @@ import "../styles/ResetPasswordModal.css";
 import logo from "../assets/logo.png";
 
 type ResetPasswordModalProps = {
+    email: string;
     onClose: () => void;
     onPasswordChanged: () => void;
 };
 
 function ResetPasswordModal({
+    email,
     onClose,
     onPasswordChanged,
 }: ResetPasswordModalProps) {
@@ -30,28 +32,56 @@ function ResetPasswordModal({
         alert("비밀번호가 일치합니다.")
     };
 
-    const handleChangePassword = () => {
+    const handleChangePassword = async () => {
         if (!newPassword || !confirmPassword) {
             alert("비밀번호를 입력해주세요.");
             return;
         }
 
-        if (!newPassword || !confirmPassword) {
+        if (newPassword !== confirmPassword) {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
 
-        console.log("비밀번호 변경", {
-            newPassword,
-        });
+        try {
+            const response = await fetch("/api/users/reset-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    newPassword,
+                    confirmPassword,
+                }),
+            });
 
-        onPasswordChanged();
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                const firstErrorMessage =
+                    errorData.email ||
+                    errorData.newPassword ||
+                    errorData.confirmPassword ||
+                    errorData.message ||
+                    "비밀번호 변경에 실패했습니다.";
+
+                alert(firstErrorMessage);
+                return;
+            }
+
+            onPasswordChanged();
+
+        } catch (error) {
+            console.error("비밀번호 변경 오류:", error);
+            alert("서버와 통신 중 오류가 발생했습니다.");
+        }
+
     };
 
     return (
         <div
             className="reset-password-backdrop"
-            onClick={onClose}
         >
             <div
                 className="reset-password-modal"

@@ -12,7 +12,6 @@ function FindPWResultModal({ onClose, onLogin }: FindPWResultModalProps) {
     return (
         <div
             className="find-pw-result-backdrop"
-            onClick={onClose}
         >
             <div
                 className="find-pw-result-modal"

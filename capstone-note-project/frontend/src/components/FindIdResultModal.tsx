@@ -6,6 +6,7 @@ import checkIcon from "../assets/icon/check.png";
 
 type FindIdResultModalProps = {
     onClose: () => void;
+    nickname: string;
     userId: string;
     onFindPassword: () => void;
     onLogin: () => void;
@@ -13,6 +14,7 @@ type FindIdResultModalProps = {
 
 function FindIdResultModal({
     onClose,
+    nickname,
     userId,
     onFindPassword,
     onLogin,
@@ -20,7 +22,6 @@ function FindIdResultModal({
     return (
         <div
             className="find-id-result-backdrop"
-            onClick={onClose}
         >
             <div
                 className="find-id-result-modal"
@@ -48,9 +49,20 @@ function FindIdResultModal({
                     />
 
                     <div className="find-id-result-message">
-                        <p>User님의 아이디는</p>
-                        <strong>{userId}</strong>
-                        <p>입니다.</p>
+                        <p className="find-id-result-title">
+                            <strong className="find-id-result-nickname">
+                                {nickname}
+                            </strong>
+                            {" "}님의 아이디는
+                        </p>
+                        
+                        <strong className="find-id-result-user-id">
+                            {userId}
+                        </strong>
+                        
+                        <p className="find-id-result-ending">
+                            입니다.
+                        </p>
                     </div>
                 </div>
 

@@ -5,15 +5,16 @@ import logo from "../assets/logo.png";
 
 type FindAccountModalProps = {
   onClose: () => void;
-  onIdFound: () => void;
-  onPasswordVerified: () => void;
+  onIdFound: (nickname: string, userId: string) => void;
+  onPasswordVerified: (email: string) => void;
+  initialTab?: "id" | "password";
 };
 
-function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccountModalProps) {
-    const [activeTab, setActiveTab] = useState<"id" | "password">("id");
+function FindAccountModal({ onClose, onIdFound, onPasswordVerified, initialTab = "id", }: FindAccountModalProps) {
+    const [activeTab, setActiveTab] = useState<"id" | "password">(initialTab);
     const [findMethod, setFindMethod] = useState<"phone" | "email">("phone");
     
-    const [name, setName] = useState("");
+    const [nickname, setNickName] = useState("");
     const [phone, setPhone] = useState("");
 
     const [emailId, setEmailId] = useState("");
@@ -29,40 +30,201 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
             ? `${emailId}@${emailDomain}`
             : "";
 
-    const handleSendVerification = () => {
-        if (findMethod === "phone") {
-            console.log("휴대폰 인증 요청", {
-                activeTab,
-                name,
-                phone,
+    // 아이디 찾기용 함수
+    const handleFindId = async () => {
+        try {
+            const response = await fetch("/api/users/find-id", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nickname,
+                    phone,
+                }),
             });
-        } else {
-            console.log("이메일 인증 요청", {
-                activeTab,
-                name,
-                email: fullEmail,
-            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                const firstErrorMessage =
+                    errorData.nickname ||
+                    errorData.phone ||
+                    errorData.message ||
+                    "일치하는 회원 정보를 찾을 수 없습니다.";
+
+                alert(firstErrorMessage);
+                return;
+            }
+
+            const email = await response.text();
+
+            onIdFound(nickname, email);
+        
+        } catch (error) {
+            console.error("아이디 찾기 오류:", error);
+            alert("서버와 통신 중 오류가 발생했습니다.");
         }
     };
 
-    const handleVerifyCode = () => {
-        console.log("인증번호 확인", {
-            activeTab,
-            findMethod,
-            verificationCode,
-        });
+    // 인증번호 발송 함수
+    const handleSendVerification = async () => {
+        try {
+            let url = "";
+            let body = {};
 
-        if (activeTab === "id") {
-            onIdFound();
-        } else {
-            onPasswordVerified();
+            // 아이디 찾기
+            if (activeTab === "id") {
+                url = "/api/users/find-id/send-code";
+
+                body = {
+                    nickname,
+                    phone,
+                };
+            }
+
+            // 비밀번호 찾기 - 휴대폰
+            else if (findMethod === "phone") {
+                url = "/api/users/find-pw/send-code";
+
+                body = {
+                    nickname,
+                    phone,
+                };
+            }
+
+            // 비밀번호 찾기 - 이메일
+            else {
+                url = "/api/users/find-pw/send-email-code";
+
+                body = {
+                    nickname,
+                    email: fullEmail,
+                };
+            }
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(body),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                const firstErrorMessage =
+                    errorData.nickname ||
+                    errorData.phone ||
+                    errorData.email ||
+                    errorData.message ||
+                    "인증번호 발송에 실패했습니다.";
+                
+                alert(firstErrorMessage);
+                return;
+            }
+
+            const message = await response.text();
+
+            alert(message);
+
+        } catch (error) {
+            console.error("인증번호 발송 오류:", error);
+            alert("서버와 통신 중 오류가 발생했습니다.");
+        }
+    };
+
+    // 인증확인 함수
+    const handleVerifyCode = async () => {
+        try {
+            let url = "";
+            let body = {};
+
+            // 아이디 찾기
+            if (activeTab === "id") {
+                url = "/api/users/find-id/verify-code";
+
+                body = {
+                    nickname,
+                    phone,
+                    code: verificationCode,
+                };
+            }
+
+            // 비밀번호 찾기 - 휴대폰
+            else if (findMethod === "phone") {
+                url = "/api/users/find-pw/verify-code";
+
+                body = {
+                    nickname,
+                    phone,
+                    code: verificationCode,
+                };
+            }
+
+            // 비밀번호 찾기 - 이메일
+            else {
+                url = "/api/users/find-pw/verify-email-code";
+
+                body = {
+                    nickname,
+                    email: fullEmail,
+                    code: verificationCode,
+                };
+            }
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                const firstErrorMessage =
+                    errorData.nickname ||
+                    errorData.phone ||
+                    errorData.email ||
+                    errorData.code ||
+                    errorData.message ||
+                    "인증번호를 확인해주세요.";
+
+                alert(firstErrorMessage);
+                return;
+            }
+
+            // 아이디 찾기
+            if (activeTab === "id") {
+                const email = await response.text();
+
+                onIdFound(nickname, email);
+                return;
+            }
+
+            // 비밀번호 찾기 - 이메일
+            if (findMethod === "email") {
+                onPasswordVerified(fullEmail);
+                return;
+            }
+
+            // 비밀번호 찾기 - 휴대폰
+            const email = await response.text();
+
+            onPasswordVerified(email);
+
+        } catch (error) {
+            console.error("인증번호 확인 오류:", error);
+            alert("서버와 통신 중 오류가 발생했습니다.");
         }
     };
     
     return (
         <div
             className="find-account-modal-backdrop"
-            onClick={onClose}
         >
             <div
                 className="find-account-modal"
@@ -86,7 +248,10 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
                     <button
                         type="button"
                         className={activeTab === "id" ? "active" : ""}
-                        onClick={() => setActiveTab("id")}
+                        onClick={() => {
+                            setActiveTab("id")
+                            setFindMethod("phone");
+                        }}
                     >
                         아이디 찾기
                     </button>
@@ -119,6 +284,7 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
                             name="findMethod"
                             checked={findMethod === "email"}
                             onChange={() => setFindMethod("email")}
+                            disabled={activeTab === "id"}
                         />
                         이메일로 찾기
                     </label>
@@ -128,9 +294,9 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
                     <input
                         type="text"
                         className="find-account-input"
-                        placeholder="이름"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        placeholder="닉네임"
+                        value={nickname}
+                        onChange={(e) => setNickName(e.target.value)}
                     />
 
                     {findMethod === "phone" ? (
@@ -139,8 +305,12 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
                                 type="tel"
                                 className="find-account-input"
                                 placeholder="휴대폰 번호를 입력하세요"
+                                maxLength={11}
                                 value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
+                                onChange={(e) => {
+                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, "");
+                                    setPhone(onlyNumbers);
+                                }}
                             />
 
                             <button
@@ -203,7 +373,10 @@ function FindAccountModal({ onClose, onIdFound, onPasswordVerified }: FindAccoun
                         placeholder="인증번호(6글자)"
                         maxLength={6}
                         value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
+                        onChange={(e) => {
+                            const onlyNumbers = e.target.value.replace(/[^0-9]/g, "")
+                            setVerificationCode(onlyNumbers)
+                        }}
                     />
 
                     <div className="find-account-divider" />

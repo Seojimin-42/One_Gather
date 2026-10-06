@@ -79,11 +79,39 @@
   color: #4d5d30;
 }
 
-.find-id-result-message p {
-  margin: 5px 0;
+.find-id-result-title {
+  margin: 0 0 8px;
 
   font-size: 20px;
   font-weight: 500;
+  line-height: 1.4;
+}
+
+
+.find-id-result-message .find-id-result-nickname {
+  display: inline;
+
+  margin: 0;
+
+  color: #3e4a3e;
+
+  font-size: 26px;
+  font-weight: 700;
+
+}
+
+.find-id-result-message .find-id-result-user-id {
+  display: block;
+
+  margin: 5px 0;
+
+  color: #3e4a3e;
+
+  font-size: 26px;
+  font-weight: 600;
+
+  text-decoration: underline;
+  text-underline-offset: 8px;
 }
 
 .find-id-result-message strong {
@@ -95,6 +123,14 @@
 
   font-size: 28px;
   font-weight: 800;
+}
+
+.find-id-result-ending {
+  margin: 18px 0 0;
+
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .find-id-result-divider {

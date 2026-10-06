@@ -71,7 +71,13 @@ public class Note {
         this.updatedAt = LocalDateTime.now();
     }
 
+    // N:1 관계 ( Note N개 : shelfIndex 1개)
+    @ManyToOne(fetch = FetchType.LAZY) // 자식 입장이 여려명
+    @JoinColumn(name = "shelf_index_id", nullable = true) // NULL 값 허용
+    private ShelfIndex shelfIndex; // 자식이 참조하는 부모 객체
+
+    // N:1 관계 ( Note N개 : User 1명 )
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shelf_index_id", nullable = true)
-    private ShelfIndex shelfIndex;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
