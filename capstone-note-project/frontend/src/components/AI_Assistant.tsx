@@ -11,6 +11,7 @@ import "../styles/AI_Assistant.css";
 
 type AIAssistantProps = {
     noteContent: string;
+    userId: number;
 };
 
 type StudyReview = {
@@ -19,12 +20,14 @@ type StudyReview = {
     questions: string[];
 }
 
-const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
+const AI_Assistant = ({ noteContent, userId }: AIAssistantProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
     const [question, setQuestion] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+
+    const [searchScope, setSearchScope] = useState<"current" | "all">("current");
 
     type Message = {
         role: "user" | "assistant";
@@ -55,12 +58,25 @@ const AI_Assistant = ({ noteContent }: AIAssistantProps) => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(
-                `/api/ai/chat-stream-model?question=${encodeURIComponent(currentQuestion)}&role=${encodeURIComponent(role)}&noteContent=${encodeURIComponent(noteContent)}`,
-                {
-                    method: "POST",
-                }
-            );
+            let url = "";
+
+            if (searchScope === "current") {
+                url =
+                    `/api/ai/chat-stream-model` +
+                    `?question=${encodeURIComponent(currentQuestion)}` +
+                    `&role=${encodeURIComponent(role)}` +
+                    `&noteContent=${encodeURIComponent(noteContent)}`;
+            } else {
+                url =
+                    `/api/ai/chat-all-notes` +
+                    `?question=${encodeURIComponent(currentQuestion)}` +
+                    `&role=${encodeURIComponent(role)}` +
+                    `&userId=${userId}`;
+            }
+
+            const response = await fetch(url, {
+                method: "POST",
+            });
 
             if (!response.ok || !response.body) {
                 throw new Error("AI 응답을 불러오지 못했습니다.");
@@ -224,19 +240,36 @@ ${data.questions
 
                                     <div className="ai-chat-title-text">
                                         <h2>무엇을 도와드릴까요?</h2>
-                                        <p>현재 보고 있는 노트를 기반으로 답변해드려요.</p>
+                                        <p>
+                                            {searchScope === "all"
+                                                ? "저장된 전체 노트를 검색해서 답변해드려요."
+                                                : "현재 보고 있는 노트를 기반으로 답변해드려요."}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div className="ai-chat-menu">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setSearchScope("all");
+                                            setSelectedRole(ROLE_FREE);
+                                        }}
+                                    >
+                                        <img src={summaryIcon} alt="전체 노트 질문"/>
+                                        <span>전체 노트 질문</span>
+                                    </button>
+
                                     <button 
                                         type="button"
-                                        onClick={() =>
+                                        onClick={() => {
+                                            setSearchScope("current");
+
                                             handleSend(
                                                 ROLE_SUMMARY,
                                                 "현재 노트의 핵심 내용을 요약해줘."
-                                            )
-                                        }
+                                            );
+                                        }}
                                     >
                                         <img src={summaryIcon} alt="노트 요약"/>
                                         <span>노트 요약</span>
@@ -244,7 +277,10 @@ ${data.questions
 
                                     <button 
                                         type="button"
-                                        onClick={handleReviewNote}
+                                        onClick={() => {
+                                            setSearchScope("current");
+                                            handleReviewNote();
+                                        }}
                                     >
                                         <img src={questionIcon} alt="복습하기"/>
                                         <span>복습하기</span>
@@ -287,9 +323,9 @@ ${data.questions
                         <input
                             type="text"
                             placeholder={
-                                selectedRole === ROLE_QUESTION
-                                    ? "현재 노트에 대해 질문해보세요"
-                                    : "질문을 입력하세요"
+                                searchScope === "all"
+                                    ? "전체 노트에 대해 질문해보세요"
+                                    : "현재 노트에 대해 질문해보세요"
                             }
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}

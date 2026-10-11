@@ -113,6 +113,12 @@ function MainPage() {
   }
   
   useEffect(() => {
+
+    if (!loginUser) {
+      setNotes([]);
+      return;
+    }
+
     api
       .get("/notes")
       .then((response) => {
@@ -124,7 +130,7 @@ function MainPage() {
         setNotes(response.data);
       })
       .catch((error) => console.error("노트 목록 불러오기 실패:", error));
-  }, []);
+  }, [loginUser]);
 
   useEffect(() => {
     const storedCoverStyles = localStorage.getItem("noteCoverStyles");
@@ -1099,7 +1105,12 @@ function MainPage() {
           </section>
           </div>
         </main>
-        <AI_Assistant noteContent="" />
+        {loginUser && (
+          <AI_Assistant 
+            noteContent=""
+            userId={loginUser.id} 
+          />
+        )}
       </div>
     </div>
   );

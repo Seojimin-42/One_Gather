@@ -3,26 +3,29 @@ package com.capstone.backend.service;
 import com.capstone.backend.dto.StudyReviewDto;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AIService {
 
     private ChatClient chatClient;
+    private VectorStore vectorStore;
 
-    public AIService(ChatClient.Builder chatClientBuilder){
+    public AIService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore){
         this.chatClient = chatClientBuilder.build();
+        this.vectorStore = vectorStore;
     }
 
     public Flux<String> generateStreamText(String question, String role, String noteContent) {
-
-//        System.out.println("question = " + question);
-//        System.out.println("role = " + role);
-//        System.out.println("noteContent = " + noteContent);
 
         SystemPromptTemplate systemTemplate =
                 new SystemPromptTemplate("""
@@ -88,5 +91,58 @@ public class AIService {
                         .maxTokens(1000))
                 .call()
                 .entity(StudyReviewDto.class);
+    }
+
+    // 임베딩과 벡터 저장소
+    public Flux<String> generateAllNotesStreamText(String question, String role, Long userId) {
+
+        List<Document> documents = vectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query(question)
+                        .topK(5)
+                        .filterExpression("userId == " + userId)
+                        .build()
+        );
+
+        String context = documents.stream()
+                .map(Document::getText)
+                .collect(Collectors.joining("\n\n"));
+
+        if(context.isBlank()) {
+            return Flux.just(
+                    "질문과 관련된 내용을 저장된 노트에서 찾지 못했습니다."
+            );
+        }
+
+        SystemPromptTemplate systemPromptTemplate =
+                new SystemPromptTemplate("""
+                        너는 One Gather의 AI 학습 도우미야.
+                        
+                        현재 역할은 {role}이야.
+                        
+                        다음은 사용자의 학습 노트에서
+                        질문과 관련된 내용을 검색한 결과야.
+                        
+                        [검색된 노트 시작]
+                        {context}
+                        [검색된 노트 끝]
+                        
+                        반드시 검색된 노트 내용을 기준으로 답변해.
+                        검색된 내용에 없는 내용은 임의로 지어내지 마.
+                        사용자가 이해하기 쉽게 핵심 내용을 중심으로 설명해줘.
+                        """);
+
+        String systemPrompt = systemPromptTemplate.render(
+                Map.of("role", role, "context", context)
+        );
+
+        return chatClient.prompt()
+                .system(systemPrompt)
+                .user(question)
+                .options(OpenAiChatOptions.builder()
+                        .temperature(0.3)
+                        .maxTokens(1000))
+                .stream()
+                .content();
     }
 }

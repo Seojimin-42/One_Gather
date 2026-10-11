@@ -10,13 +10,14 @@ import com.capstone.backend.repository.ShelfIndexRepository;
 import com.capstone.backend.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
-import java.util.ArrayList;
+
+import java.util.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class NoteService {
     private final CloudinaryService cloudinaryService;
     private final ShelfIndexRepository shelfIndexRepository;
     private final UserRepository userRepository;
+    private final VectorStore vectorStore;
 
     // DB에서 노트 전체 조회
     public List<NoteResponseDto> getAllNotes(Long userId) {
@@ -92,6 +94,9 @@ public class NoteService {
         );
 
         Note savedNote = noteRepository.save(note);
+
+        saveNoteVector(savedNote);
+
         return new NoteResponseDto(savedNote);
     }
 
@@ -99,6 +104,9 @@ public class NoteService {
     public NoteResponseDto updateNote(Long id, Long userId, NoteRequestDto requestDto) {
         Note note = noteRepository.findByIdAndUser_Id(id, userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 노트가 없습니다. id=" + id));
+
+        String oldTitle = note.getTitle();
+        String oldContent = note.getContent();
 
         String oldPublicId = note.getCoverImagePublicId();
         String newPublicId = requestDto.getCoverImagePublicId();
@@ -175,6 +183,16 @@ public class NoteService {
         }
 
         Note updatedNote = noteRepository.save(note);
+
+        boolean vectorNeedsUpdate =
+                !Objects.equals(oldTitle, updatedNote.getTitle())
+                || !Objects.equals(oldContent, updatedNote.getContent());
+
+        if (vectorNeedsUpdate) {
+            deleteNoteVector(updatedNote.getId(), userId);
+            saveNoteVector(updatedNote);
+        }
+
         return new NoteResponseDto(updatedNote);
     }
 
@@ -186,6 +204,8 @@ public class NoteService {
         note.setDeleted(true);
         note.setDeletedAt(LocalDateTime.now());
         noteRepository.save(note);
+
+        deleteNoteVector(id, userId);
     }
 
     // 휴지통에 있는 노트 목록 조회
@@ -212,7 +232,11 @@ public class NoteService {
 
         note.setDeleted(false);
         note.setDeletedAt(null);
+
         Note restoredNote = noteRepository.save(note);
+
+        saveNoteVector(restoredNote);
+
         return new NoteResponseDto(restoredNote);
     }
 
@@ -223,6 +247,9 @@ public class NoteService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 노트가 없습니다. id=" + id));
 
         deleteCoverImageSafely(note.getCoverImagePublicId());
+
+        deleteNoteVector(id, userId);
+
         noteRepository.delete(note);
     }
 
@@ -237,6 +264,7 @@ public class NoteService {
 
         for (Note note : deletedNotes) {
             deleteCoverImageSafely(note.getCoverImagePublicId());
+            deleteNoteVector(note.getId(), userId);
         }
 
         noteRepository.deleteAll(deletedNotes);
@@ -322,7 +350,11 @@ public class NoteService {
 
         for (Note note : deletedNotes) {
             if (note.getDeletedAt() != null && note.getDeletedAt().isBefore(cutoff)) {
+
                 deleteCoverImageSafely(note.getCoverImagePublicId());
+
+                deleteNoteVector(note.getId(), note.getUser().getId());
+
                 expiredNotes.add(note);
             }
         }
@@ -420,6 +452,44 @@ public class NoteService {
         copy.setLastViewedAt(null);
 
         Note saved = noteRepository.save(copy);
+
+        saveNoteVector(saved);
+
         return new NoteResponseDto(saved);
+    }
+
+    private void saveNoteVector(Note note) {
+
+        if (note.getContent() == null || note.getContent().isBlank()) {
+            return;
+        }
+
+        Document document = new Document(
+                note.getContent(),
+                Map.of(
+                        "userId", note.getUser().getId(),
+                        "noteId", note.getId(),
+                        "title", note.getTitle() != null ? note.getTitle() : ""
+                )
+        );
+
+        vectorStore.add(List.of(document));
+    }
+
+    private void deleteNoteVector(Long noteId, Long userId) {
+        vectorStore.delete(
+                "noteId == " + noteId + " && userId == " + userId
+        );
+    }
+
+    public void indexExistingNotes(Long userId) {
+
+        List<Note> notes =
+                noteRepository.findByUser_IdAndDeletedFalseOrderByUpdatedAtDesc(userId);
+
+        for (Note note : notes) {
+            deleteNoteVector(note.getId(), userId);
+            saveNoteVector(note);
+        }
     }
 }

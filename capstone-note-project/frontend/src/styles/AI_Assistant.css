@@ -63,6 +63,8 @@
   flex: 1;
   padding: 10px 16px 16px;
 
+  position: relative;
+
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -150,13 +152,20 @@
 .ai-chat-background-character {
   width: 360px;
   height: 360px;
-  margin: -120px 58px;
+
+  position: absolute;
+  left: 48%;
+  top: 105px;
+
+  transform: translateX(-50%);
+
+  margin: 0;
+
   display: block;
+  object-fit: contain;
+
   opacity: 0.45;
 
-  pointer-events: none;
-
-  position: relative;
   z-index: 1;
   pointer-events: none;
 }

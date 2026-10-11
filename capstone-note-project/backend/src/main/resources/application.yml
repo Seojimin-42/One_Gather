@@ -1,4 +1,8 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.vectorstore.pgvector.autoconfigure.PgVectorStoreAutoConfiguration
+
   datasource:
     url: jdbc:mysql://localhost:3306/note_app?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
@@ -13,12 +17,29 @@ spring:
         format_sql: true
 
   ai:
+    model:
+      chat: openai
+      embedding: ollama
+
     openai:
       api-key: ${OPEN_API_KEY}
       base-url: https://api.groq.com/openai/v1
       chat:
         options:
           model: openai/gpt-oss-120b
+
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: bge-m3
+
+app:
+  pgvector:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: postgres
+      password: postgres
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
