@@ -29,66 +29,12 @@
   font-size: 16px;
 }
 
-.mypage-top-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #3e4a3e;
-  font-size: 20px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.mypage-top-info-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-
-.mypage-submenu-button {
-  border: none;
-  background-color: #e8e1cf;
-  color: #3e4a3e;
-  padding: 12px 16px;
-  border-radius: 7px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.mypage-submenu-button.active-submenu {
-  background-color: #e8e1cf;
-  color: #3e4a3e;
-}
-
-.mypage-summary-card,
 .mypage-trash-card {
   border: 2px solid #c6b99e;
   border-radius: 10px;
   background-color: #f8f6ee;
   padding: 22px 20px 18px;
   margin-bottom: 18px;
-}
-
-.mypage-row {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  column-gap: 24px;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #8d8d7a;
-}
-
-.mypage-row .label {
-  font-size: 20px;
-  font-weight: 800;
-  color: #3e4a3e;
-  justify-self: start;
-  transform: translateX(12px);
-}
-
-.mypage-row .value {
-  font-size: 18px;
-  color: #333;
 }
 
 .mypage-trash-title {
@@ -143,11 +89,10 @@
 }
 
 .trash-actions {
-  justify-self: center;
-  transform: translateX(6px);
-}
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 
-.trash-actions {
   justify-self: center;
   transform: translateX(6px);
 }
@@ -190,12 +135,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;
-}
-
-.trash-actions {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
 }
 
 .restore-button,
@@ -326,20 +265,92 @@
   pointer-events: none;
 }
 
+/* =========================
+   마이페이지 상단 탭
+========================= */
+
+.mypage-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+
+  margin: 0 8px 18px;
+  padding-bottom: 8px;
+
+  border-bottom: 2px solid #8d8d7a;
+}
+
+.mypage-tab-button {
+  min-height: 48px;
+
+  border: 1px solid #bdb8aa;
+  border-radius: 5px;
+
+  background-color: #f8f6ee;
+  color: #3e4a3e;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.mypage-tab-button:hover {
+  background-color: #eee9dc;
+}
+
+.mypage-tab-button.active-tab {
+  background-color: #e0d8c6;
+  border-color: #b6aa91;
+  font-weight: 800;
+}
+
+/* =========================
+   마이페이지 사이드바 서브메뉴
+========================= */
+
+.mypage-sidebar-submenu {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: -4px;
+  margin-bottom: 8px;
+}
+
+.mypage-sidebar-submenu button {
+  border: none;
+  border-radius: 4px;
+
+  background: transparent;
+  color: #4d564d;
+
+  padding: 7px 14px 7px 32px;
+
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.mypage-sidebar-submenu button:hover {
+  background-color: #eee9dc;
+}
+
+.mypage-sidebar-submenu button.active-submenu {
+  background-color: #e0d8c6;
+  color: #3e4a3e;
+  font-weight: 700;
+}
 
 @media (max-width: 900px) {
   .mypage-content {
     margin-left: 0;
     padding: 20px;
-  }
-
-  .mypage-top-info {
-    font-size: 16px;
-  }
-
-  .mypage-row {
-    grid-template-columns: 130px 1fr;
-    gap: 10px;
   }
 
   .trash-header,
@@ -350,20 +361,5 @@
   .trash-header span:last-child,
   .trash-row > div:last-child {
     grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 700px) {
-  .mypage-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 18px 0;
-  }
-
-  .mypage-row .label,
-  .mypage-row .value {
-    font-size: 16px;
-    overflow-wrap: anywhere;
-    word-break: break-word;
   }
 }

@@ -5,6 +5,8 @@ import NoteViewPage from "./pages/NoteViewPage";
 import RecentPage from "./pages/RecentPage";
 import FavoritePage from "./pages/FavoritePage";
 import MyPage from "./pages/MyPage";
+import FriendSearchPage from "./pages/FriendSearchPage";
+import FriendListPage from "./pages/FriendListPage";
 
 /* 이전에 NoteCreatePage에 분리된 수정 전용 페이지를 만드려고 했으나, 
   NoteCreatePage로 통합했기에 지금은 현재 사용하지 않음. -> 보류 */
@@ -23,6 +25,8 @@ function App() {
         <Route path="/recent" element={<RecentPage />} />
         <Route path="/favorite" element={<FavoritePage />} />
         <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/mypage/friend-search" element={<FriendSearchPage/>} />
+        <Route path="/mypage/friend-list" element={<FriendListPage/>} />
       </Routes>
     </BrowserRouter>
   );

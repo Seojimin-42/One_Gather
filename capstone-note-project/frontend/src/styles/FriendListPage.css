@@ -1,0 +1,523 @@
+/* =========================
+   친구 목록 페이지
+========================= */
+
+
+/* 친구 검색창 */
+
+.friend-list-search-box {
+  position: relative;
+
+  margin: 12px 8px;
+}
+
+.friend-list-search-box input {
+  width: 100%;
+  height: 48px;
+
+  box-sizing: border-box;
+
+  border: 2px solid #c6b99e;
+  border-radius: 24px;
+
+  background-color: #f8f6ee;
+
+  padding: 0 58px 0 18px;
+
+  color: #3e4a3e;
+  font-size: 15px;
+
+  outline: none;
+}
+
+.friend-list-search-box input::placeholder {
+  color: #777;
+}
+
+.friend-list-search-box input:focus {
+  border-color: #7f8b76;
+}
+
+
+/* 검색 버튼 */
+
+.friend-list-search-button {
+  position: absolute;
+
+  top: 50%;
+  right: 8px;
+
+  transform: translateY(-50%);
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+}
+
+.friend-list-search-button img {
+  width: 21px;
+  height: 21px;
+
+  object-fit: contain;
+}
+
+
+/* =========================
+   친구 목록 결과 요약
+========================= */
+
+.friend-list-result-summary {
+  margin: 8px 8px 4px;
+
+  padding: 7px 12px;
+
+  background-color: #d9dfcf;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   친구 목록 표
+========================= */
+
+.friend-list-table {
+  margin: 0 8px;
+
+  color: #3e4a3e;
+}
+
+.friend-list-header,
+.friend-list-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(170px, 1fr)
+    minmax(170px, 1fr);
+
+  align-items: center;
+}
+
+.friend-list-header {
+  min-height: 42px;
+
+  border-bottom: 1px solid #aaa697;
+
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.friend-list-row {
+  min-height: 48px;
+
+  border-bottom: 1px solid #c8c2b6;
+
+  font-size: 14px;
+}
+
+
+/* 이름 */
+
+.friend-list-name {
+  padding-left: 22px;
+
+  text-align: left;
+}
+
+
+/* 친구 상태 */
+
+.friend-list-status {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 프로필 보기 */
+
+.friend-list-profile {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 친구 해제 */
+
+.friend-remove-button {
+  min-width: 86px;
+
+  padding: 6px 14px;
+
+  border: none;
+  border-radius: 16px;
+
+  background-color: #ef8c8c;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.friend-remove-button:hover {
+  background-color: #e47d7d;
+}
+
+
+/* 페이지 보기 */
+
+.friend-list-profile-button {
+  min-width: 90px;
+
+  padding: 6px 14px;
+
+  border: 1px solid #8d8d7a;
+  border-radius: 16px;
+
+  background-color: #f8f6ee;
+  color: #3e4a3e;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.friend-list-profile-button:hover {
+  background-color: #ece9e0;
+}
+
+
+/* =========================
+   친구 목록 페이지네이션
+========================= */
+
+.friend-list-pagination {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 36px;
+}
+
+.friend-list-pagination button {
+  min-width: 26px;
+  height: 26px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.friend-list-pagination button:hover:not(:disabled) {
+  background-color: #e5e0d3;
+}
+
+.friend-list-pagination button.active-page {
+  background-color: #3e4a3e;
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+.friend-list-pagination button:disabled {
+  opacity: 0.3;
+
+  cursor: default;
+}
+
+
+/* =========================
+   친구 요청 영역
+========================= */
+
+.friend-request-section {
+  margin: 28px 8px 0;
+}
+
+
+/* 친구 요청 제목 */
+
+.friend-request-title {
+  margin: 0 0 8px;
+
+  padding: 0 0 8px 6px;
+
+  border-bottom: 1px solid #8d8d7a;
+
+  color: #3e4a3e;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+
+/* =========================
+   친구 요청 표
+========================= */
+
+.friend-request-table {
+  color: #3e4a3e;
+}
+
+.friend-request-header,
+.friend-request-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(170px, 1fr)
+    minmax(170px, 1fr);
+
+  align-items: center;
+}
+
+.friend-request-header {
+  min-height: 42px;
+
+  border-bottom: 1px solid #aaa697;
+
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.friend-request-row {
+  min-height: 48px;
+
+  border-bottom: 1px solid #c8c2b6;
+
+  font-size: 14px;
+}
+
+
+/* 이름 */
+
+.friend-request-name {
+  padding-left: 22px;
+
+  text-align: left;
+}
+
+
+/* 요청 상태 */
+
+.friend-request-actions {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* 수락 */
+
+.friend-accept-button {
+  min-width: 64px;
+
+  padding: 6px 12px;
+
+  border: 1px solid #7f8b76;
+  border-radius: 16px;
+
+  background-color: #f8f6ee;
+  color: #3e4a3e;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.friend-accept-button:hover {
+  background-color: #e2e8d9;
+}
+
+
+/* 거절 */
+
+.friend-reject-button {
+  min-width: 64px;
+
+  padding: 6px 12px;
+
+  border: 1px solid #ef8c8c;
+  border-radius: 16px;
+
+  background-color: #f8f6ee;
+  color: #df6f6f;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.friend-reject-button:hover {
+  background-color: #fff0f0;
+}
+
+
+/* 요청 사용자 프로필 */
+
+.friend-request-profile {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.friend-request-profile-button {
+  min-width: 90px;
+
+  padding: 6px 14px;
+
+  border: 1px solid #8d8d7a;
+  border-radius: 16px;
+
+  background-color: #f8f6ee;
+  color: #3e4a3e;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.friend-request-profile-button:hover {
+  background-color: #ece9e0;
+}
+
+
+/* =========================
+   친구 요청 페이지네이션
+========================= */
+
+.friend-request-pagination {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 36px;
+}
+
+.friend-request-pagination button {
+  min-width: 26px;
+  height: 26px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.friend-request-pagination button:hover:not(:disabled) {
+  background-color: #e5e0d3;
+}
+
+.friend-request-pagination button.active-page {
+  background-color: #3e4a3e;
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+.friend-request-pagination button:disabled {
+  opacity: 0.3;
+
+  cursor: default;
+}
+
+
+/* =========================
+   반응형
+========================= */
+
+@media (max-width: 900px) {
+
+  .friend-list-header,
+  .friend-list-row,
+  .friend-request-header,
+  .friend-request-row {
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .friend-list-header,
+  .friend-list-row,
+  .friend-request-header,
+  .friend-request-row {
+    grid-template-columns: 1fr 1fr 1fr;
+
+    font-size: 12px;
+  }
+
+  .friend-list-name,
+  .friend-request-name {
+    padding-left: 8px;
+  }
+
+  .friend-remove-button,
+  .friend-list-profile-button,
+  .friend-accept-button,
+  .friend-reject-button,
+  .friend-request-profile-button {
+    min-width: auto;
+
+    padding: 5px 8px;
+
+    font-size: 11px;
+  }
+
+}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/api";
+
 import "../styles/MyPage.css";
 
 import logo from "../assets/logo.png";
@@ -33,20 +34,17 @@ function MyPage() {
 
     const [notes, setNotes] = useState<Note[]>([]);
     const [trashNotes, setTrashNotes] = useState<Note[]>([]);
-    const [recentNotes, setRecentNotes] = useState<Note[]>([]);
-    const [favoriteNotes, setFavoriteNotes] = useState<Note[]>([]);
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
 
     const ITEMS_PER_PAGE = 5;
 
-    useEffect(() => {
-        const storedRecent = localStorage.getItem("recentNotes");
-        const storedFavorite = localStorage.getItem("favoriteNotes");
-
-        setRecentNotes(storedRecent ? JSON.parse(storedRecent) : []);
-        setFavoriteNotes(storedFavorite ? JSON.parse(storedFavorite) : []);
-    }, []);
+    // UI 확인용 임시 사용자 정보 추가
+    const mockUser = {
+        nickname: "AA친구",
+        email: "AA친구@gmail.com",
+        friendCount: 1,
+    };
 
     useEffect(() => {
         const fetchMyPageData = async () => {
@@ -72,20 +70,6 @@ function MyPage() {
         fetchMyPageData();
     }, []);
 
-    const latestRecentNote = recentNotes[0] ?? null;
-
-    const latestStudyDate = useMemo(() => {
-        if (!latestRecentNote?.lastViewedAt) return "-";
-
-        const date = new Date(latestRecentNote.lastViewedAt);
-        if (Number.isNaN(date.getTime())) return "-";
-
-        return date.toLocaleDateString("sv-SE");
-    }, [latestRecentNote]);
-
-    const latestViewedNoteTitle = latestRecentNote?.title ?? "-";
-
-    const favoriteCount = favoriteNotes.length;
     const savedNoteCount = notes.length;
 
     const totalPages = Math.max(1, Math.ceil(trashNotes.length / ITEMS_PER_PAGE));
@@ -200,43 +184,76 @@ function MyPage() {
 
     return (
         <div className="page">
-        <div className="layout">
-            <aside className="sidebar">
-            <div className="sidebar-top">
-                <div
-                className="sidebar-logo"
-                onClick={() => navigate("/")}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                    navigate("/");
-                    }
-                }}
-                >
-                <img src={logo} alt="One Gather 로고" />
-                </div>
+            <div className="layout">
 
-                <div className="sidebar-menu">
-                <button type="button" onClick={() => navigate("/")}>
-                    전체노트
-                </button>
-                <button type="button" onClick={() => navigate("/recent")}>
-                    최근학습
-                </button>
-                <button type="button" onClick={() => navigate("/favorite")}>
-                    즐겨찾기
-                </button>
-                <button type="button" className="active-menu">
-                    마이페이지
-                </button>
-                </div>
-            </div>
+                <aside className="sidebar">
+                    <div className="sidebar-top">
+                        <div
+                        className="sidebar-logo"
+                        onClick={() => navigate("/")}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                            navigate("/");
+                            }
+                        }}
+                        >
+                        <img src={logo} alt="One Gather 로고" />
+                        </div>
 
-            <div className="sidebar-bottom">
-                <img src={sidebarBook} alt="책 장식" />
-            </div>
-            </aside>
+                        <div className="sidebar-menu">
+                            <button type="button" onClick={() => navigate("/")}>
+                                전체노트
+                            </button>
+
+                            <button type="button" onClick={() => navigate("/recent")}>
+                                최근학습
+                            </button>
+
+                            <button type="button" onClick={() => navigate("/favorite")}>
+                                즐겨찾기
+                            </button>
+
+                            <button 
+                                type="button"
+                                className="active-menu"
+                                onClick={() => navigate("/mypage")}
+                            >
+                                마이페이지
+                            </button>
+
+                            <div className="mypage-sidebar-submenu">
+
+                                <button
+                                    type="button"
+                                    className="active-submenu"
+                                    onClick={() => navigate("/mypage")}
+                                >
+                                    내 정보
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => navigate("/mypage/friend-search")}
+                                >
+                                    친구 검색
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => navigate("/mypage/friend-list")}
+                                >
+                                    친구 목록
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="sidebar-bottom">
+                        <img src={sidebarBook} alt="책 장식" />
+                    </div>
+                </aside>
 
             <main className="main mypage-main">
             <div className="topbar">
@@ -253,36 +270,81 @@ function MyPage() {
 
             <section className="mypage-content">
                 <h2>마이페이지</h2>
-                <p className="mypage-description">
-                사용자의 해당 정보를 확인할 수 있습니다.
-                </p>
 
-                <div className="mypage-summary-card">
-                <div className="mypage-row">
-                    <span className="label">최근 학습일</span>
-                    <span className="value">{latestStudyDate}</span>
+                <div className="mypage-tabs">
+                    <button
+                        type="button"
+                        className="mypage-tab-button active-tab"
+                        onClick={() => navigate("/mypage")}
+                    >
+                        내 정보
+                    </button>
+
+                    <button
+                        type="button"
+                        className="mypage-tab-button"
+                        onClick={() => navigate("/mypage/friend-search")}
+                    >
+                        친구 검색
+                    </button>
+
+                    <button
+                        type="button"
+                        className="mypage-tab-button"
+                        onClick={() => navigate("/mypage/friend-list")}
+                    >
+                        친구 목록
+                    </button>
                 </div>
 
-                <div className="mypage-row">
-                    <span className="label">최근 열람 노트</span>
-                    <span className="value">{latestViewedNoteTitle}</span>
-                </div>
+                <>
+                    <p className="mypage-description">
+                        사용자의 해당 정보를 확인할 수 있습니다.
+                    </p>
 
-                <div className="mypage-row">
-                    <span className="label">즐겨찾기 수</span>
-                    <span className="value">{favoriteCount}</span>
-                </div>
+                    <div className="profile-card">
+                        <div className="profile-left">
+                            <div className="profile-image">
+                                <div className="profile-head"/>
+                                <div className="profile-body"/>
+                            </div>
 
-                <div className="mypage-row">
-                    <span className="label">저장한 노트 수</span>
-                    <span className="value">{savedNoteCount}</span>
-                </div>
-                </div>
-                
-                <h3 className="mypage-trash-title">휴지통 보관함</h3>
-                <p className="mypage-trash-description">
-                    휴지통에 삭제된 노트의 보관 내역을 확인할 수 있습니다.
-                </p>
+                            <button
+                                type="button"
+                                className="profile-edit-button"
+                            >
+                                ✏️ 프로필 변경하기
+                            </button>
+                        </div>
+
+                        <div className="profile-info">
+                            <div className="profile-info-row">
+                                <span className="profile-label">닉네임</span>
+                                <span>{mockUser.nickname}</span>
+                            </div>
+
+                            <div className="profile-info-row">
+                                <span className="profile-label">이메일</span>
+                                <span>{mockUser.email}</span>
+                            </div>
+
+                            <div className="profile-info-row">
+                                <span className="profile-label">친구 수</span>
+                                <span>{mockUser.friendCount}</span>
+                            </div>
+
+                            <div className="profile-info-row">
+                                <span className="profile-label">저장한 노트 수</span>
+                                <span>{savedNoteCount}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 className="mypage-trash-title">휴지통 보관함</h3>
+                    <p className="mypage-trash-description">
+                        휴지통에 삭제된 노트의 보관 내역을 확인할 수 있습니다.
+                    </p>
+                </>
 
                 <div className="mypage-trash-card">
                     <div

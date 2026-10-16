@@ -1,0 +1,331 @@
+/* =========================
+   친구 검색 페이지
+========================= */
+
+
+/* 사용자 검색창 */
+
+.friend-search-box {
+  position: relative;
+  margin: 12px 8px;
+  box-sizing: border-box;
+}
+
+.friend-search-box input {
+  width: 100%;
+  height: 48px;
+
+  box-sizing: border-box;
+
+  border: 2px solid #c6b99e;
+  border-radius: 24px;
+
+  background-color: #f8f6ee;
+
+  padding: 0 58px 0 18px;
+
+  color: #3e4a3e;
+  font-size: 15px;
+
+  outline: none;
+}
+
+.friend-search-box input::placeholder {
+  color: #777;
+}
+
+.friend-search-box input:focus {
+  border-color: #7f8b76;
+}
+
+
+/* 검색창 돋보기 */
+
+.friend-search-button {
+  position: absolute;
+
+  top: 50%;
+  right: 8px;
+
+  transform: translateY(-50%);
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+}
+
+.friend-search-button img {
+  width: 21px;
+  height: 21px;
+
+  object-fit: contain;
+}
+
+
+/* 검색 결과 개수 */
+
+.friend-section-title {
+  margin: 8px 8px 4px;
+  padding: 7px 12px;
+  background-color: #d9dfcf;
+  color: #3e4a3e;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* 검색 결과 표 */
+
+.friend-search-table {
+  margin: 0 8px;
+
+  color: #3e4a3e;
+}
+
+
+/* 표 제목 */
+
+.friend-search-header {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(170px, 1fr)
+    minmax(170px, 1fr);
+
+  align-items: center;
+
+  min-height: 42px;
+
+  border-bottom: 1px solid #aaa697;
+
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* 사용자 행 */
+
+.friend-search-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(170px, 1fr)
+    minmax(170px, 1fr);
+
+  align-items: center;
+
+  min-height: 48px;
+
+  border-bottom: 1px solid #c8c2b6;
+
+  font-size: 14px;
+}
+
+
+/* 이름 */
+
+.friend-search-name {
+  padding-left: 22px;
+
+  text-align: left;
+}
+
+
+/* 친구 상태 */
+
+.friend-search-status {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 프로필 */
+
+.friend-search-profile {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 공통 버튼 */
+
+.friend-cancel-button,
+.friend-add-button,
+.friend-profile-button {
+  border: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+
+/* 친구 추가 */
+
+.friend-add-button {
+  min-width: 86px;
+
+  padding: 6px 14px;
+
+  border-radius: 16px;
+
+  background-color: #ece9e0;
+  color: #3e4a3e;
+}
+
+
+/* 친구 취소 */
+
+.friend-cancel-button {
+  min-width: 86px;
+
+  padding: 6px 14px;
+
+  border-radius: 16px;
+
+  background-color: #ef8c8c;
+  color: #ffffff;
+}
+
+
+/* 프로필 보러가기 */
+
+.friend-profile-button {
+  min-width: 90px;
+
+  padding: 6px 14px;
+
+  border: 1px solid #8d8d7a;
+  border-radius: 16px;
+
+  background-color: #f8f6ee;
+  color: #3e4a3e;
+}
+
+
+/* hover */
+
+.friend-add-button:hover {
+  background-color: #dedace;
+}
+
+.friend-cancel-button:hover {
+  background-color: #e47d7d;
+}
+
+.friend-profile-button:hover {
+  background-color: #ece9e0;
+}
+
+
+/* =========================
+   페이지네이션
+========================= */
+
+.friend-pagination {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 36px;
+}
+
+.friend-pagination button {
+  min-width: 26px;
+  height: 26px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #3e4a3e;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.friend-pagination button:hover:not(:disabled) {
+  background-color: #e5e0d3;
+}
+
+.friend-pagination button.active-page {
+  background-color: #3e4a3e;
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+.friend-pagination button:disabled {
+  opacity: 0.3;
+
+  cursor: default;
+}
+
+
+/* =========================
+   반응형
+========================= */
+
+@media (max-width: 900px) {
+
+  .friend-search-header,
+  .friend-search-row {
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .friend-search-header,
+  .friend-search-row {
+    grid-template-columns: 1fr 1fr 1fr;
+
+    font-size: 12px;
+  }
+
+  .friend-search-name {
+    padding-left: 8px;
+  }
+
+  .friend-add-button,
+  .friend-cancel-button,
+  .friend-profile-button {
+    min-width: auto;
+
+    padding: 5px 8px;
+
+    font-size: 11px;
+  }
+
+}
