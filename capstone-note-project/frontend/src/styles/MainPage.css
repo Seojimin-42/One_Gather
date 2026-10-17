@@ -15,44 +15,60 @@
   position: relative;
 }
 
+/* ==============================
+   공통 사이드바
+============================== */
+
 .sidebar {
   width: 230px;
-  background-color: #F5F4ED;
+  background-color: #f5f4ed;
   padding: 24px 18px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* 로고 이미지 */
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  cursor: pointer;
+}
+
 .sidebar-logo img {
   width: 190.5px;
   object-fit: contain;
   display: block;
   margin: 0 auto 24px;
-  cursor: pointer;
 }
 
 .sidebar-menu {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* 버튼 간 높이 간격 */
+  gap: 10px;
 }
 
 .sidebar-menu button {
   border: none;
-  background-color: #F5F4ED;
-  color: #3E4A3E;
+  background-color: #f5f4ed;
+  color: #3e4a3e;
+
   padding: 16px;
   border-radius: 7px;
+
   font-size: 19px;
   font-weight: 700;
+
   cursor: pointer;
 }
 
-.sidebar-menu button:hover {
-  background-color: #3E4A3E;
-  color: #F5F4ED;
+.sidebar-menu button:hover,
+.sidebar-menu button.active-menu {
+  background-color: #3e4a3e;
+  color: #f5f4ed;
 }
 
 .sidebar-bottom {

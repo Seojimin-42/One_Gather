@@ -80,15 +80,16 @@
 
 .friend-list-result-summary {
   margin: 8px 8px 4px;
-
-  padding: 7px 12px;
-
+  padding: 14px 20px;
   background-color: #d9dfcf;
-
   color: #3e4a3e;
+  font-weight: 580;
 
-  font-size: 14px;
-  font-weight: 700;
+  border-radius: 4px;
+}
+
+.friend-result-count {
+  font-weight: 900;
 }
 
 
@@ -121,7 +122,7 @@
 
   text-align: center;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -166,9 +167,9 @@
 /* 친구 해제 */
 
 .friend-remove-button {
-  min-width: 86px;
+  width: 110px;
 
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border: none;
   border-radius: 16px;
@@ -176,23 +177,23 @@
   background-color: #ef8c8c;
   color: #ffffff;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .friend-remove-button:hover {
-  background-color: #e47d7d;
+  background-color: #e25252;
 }
 
 
 /* 페이지 보기 */
 
 .friend-list-profile-button {
-  min-width: 90px;
+  width: 110px;
 
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border: 1px solid #8d8d7a;
   border-radius: 16px;
@@ -200,14 +201,15 @@
   background-color: #f8f6ee;
   color: #3e4a3e;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .friend-list-profile-button:hover {
-  background-color: #ece9e0;
+  background-color: #e0d8c6;
+  color: #3e4a3e;
 }
 
 
@@ -304,6 +306,8 @@
     minmax(170px, 1fr);
 
   align-items: center;
+
+  transform: translateY(-5px);
 }
 
 .friend-request-header {
@@ -313,7 +317,7 @@
 
   text-align: center;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -350,9 +354,9 @@
 /* 수락 */
 
 .friend-accept-button {
-  min-width: 64px;
+  width: 80px;
 
-  padding: 6px 12px;
+  padding: 8px 16px;
 
   border: 1px solid #7f8b76;
   border-radius: 16px;
@@ -360,23 +364,24 @@
   background-color: #f8f6ee;
   color: #3e4a3e;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .friend-accept-button:hover {
-  background-color: #e2e8d9;
+  background-color: #e0d8c6;
+  color: #3e4a3e;
 }
 
 
 /* 거절 */
 
 .friend-reject-button {
-  min-width: 64px;
+  width: 80px;
 
-  padding: 6px 12px;
+  padding: 8px 16px;
 
   border: 1px solid #ef8c8c;
   border-radius: 16px;
@@ -384,14 +389,15 @@
   background-color: #f8f6ee;
   color: #df6f6f;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .friend-reject-button:hover {
-  background-color: #fff0f0;
+  background-color: #e25252;
+  color: #f8f6ee;
 }
 
 
@@ -405,9 +411,9 @@
 }
 
 .friend-request-profile-button {
-  min-width: 90px;
+  width: 110px;
 
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border: 1px solid #8d8d7a;
   border-radius: 16px;
@@ -415,14 +421,15 @@
   background-color: #f8f6ee;
   color: #3e4a3e;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .friend-request-profile-button:hover {
-  background-color: #ece9e0;
+  background-color: #e0d8c6;
+  color: #3e4a3e;
 }
 
 

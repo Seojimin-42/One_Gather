@@ -5,6 +5,9 @@ import NoteViewer from "../components/NoteViewer";
 import type { NotePage } from "../utils/noteHelpers";
 import { normalizePages } from "../utils/noteHelpers";
 import { ChevronUp, ChevronDown, PanelTop } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+
+import AI_Assistant from "../components/AI_Assistant";
 
 import "../styles/MainPage.css";
 import "../styles/NoteCreatePage.css";
@@ -24,6 +27,8 @@ type SharedNote = {
 
 function SharedNotePage() {
   const { shareId } = useParams();
+  const { loginUser } = useAuth();
+
   const navigate = useNavigate();
 
   const [note, setNote] = useState<SharedNote | null>(null);
@@ -36,6 +41,29 @@ function SharedNotePage() {
   const [viewMode, setViewMode] = useState<"single" | "double">("single");
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pageInputValue, setPageInputValue] = useState("1");
+
+  const stripHtml = (html: string) => {
+    return html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/<[^>]*>/g, "")
+      .trim();
+  };
+
+  const aiNoteContent = pages
+    .map((page, index) => {
+      const mainContent = stripHtml(page.contentHtml ?? "");
+
+      return `
+  [${index + 1}페이지]
+  제목: ${page.title || ""}
+
+  ${mainContent}
+      `.trim();
+    })
+    .filter((content) => content !== "")
+    .join("\n\n");
 
   useEffect(() => {
     const fetchSharedNote = async () => {
@@ -98,11 +126,23 @@ function SharedNotePage() {
     <div className="page shared-note-page">
       {viewMode === "single" && (
         <header className="shared-note-header">
-          <div className="shared-note-logo">
+          <div 
+            className="shared-note-logo"
+            onClick={() => navigate("/")}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                navigate("/");
+              }
+            }}
+          >
             <img src={logo} alt="One Gather 로고" />
           </div>
 
-          <div className="shared-note-badge">📖 공유된 노트를 보고 있습니다</div>
+          <div className="shared-note-badge">
+            📖 공유된 노트를 보고 있습니다
+          </div>
         </header>
       )}
 
@@ -173,6 +213,13 @@ function SharedNotePage() {
           </div>
         )}
       </main>
+
+      {loginUser && (
+          <AI_Assistant
+              noteContent={aiNoteContent}
+              userId={loginUser.id}
+          />
+      )}
     </div>
   );
 }

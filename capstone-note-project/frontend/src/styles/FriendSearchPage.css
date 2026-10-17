@@ -2,7 +2,6 @@
    친구 검색 페이지
 ========================= */
 
-
 /* 사용자 검색창 */
 
 .friend-search-box {
@@ -78,11 +77,16 @@
 
 .friend-section-title {
   margin: 8px 8px 4px;
-  padding: 7px 12px;
+  padding: 14px 20px;
   background-color: #d9dfcf;
   color: #3e4a3e;
-  font-size: 14px;
-  font-weight: 700;
+  font-weight: 580;
+
+  border-radius: 4px;
+}
+
+.friend-result-count {
+  font-weight: 900;
 }
 
 
@@ -113,7 +117,7 @@
 
   text-align: center;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -174,7 +178,9 @@
 .friend-profile-button {
   border: none;
 
-  font-size: 13px;
+  width: 110px;
+
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
@@ -186,9 +192,7 @@
 /* 친구 추가 */
 
 .friend-add-button {
-  min-width: 86px;
-
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border-radius: 16px;
 
@@ -200,9 +204,7 @@
 /* 친구 취소 */
 
 .friend-cancel-button {
-  min-width: 86px;
-
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border-radius: 16px;
 
@@ -214,9 +216,7 @@
 /* 프로필 보러가기 */
 
 .friend-profile-button {
-  min-width: 90px;
-
-  padding: 6px 14px;
+  padding: 8px 16px;
 
   border: 1px solid #8d8d7a;
   border-radius: 16px;
@@ -229,15 +229,17 @@
 /* hover */
 
 .friend-add-button:hover {
-  background-color: #dedace;
+  background-color: #e0d8c6;
+  color: #3e4a3e;
 }
 
 .friend-cancel-button:hover {
-  background-color: #e47d7d;
+  background-color: #e25252;
 }
 
 .friend-profile-button:hover {
-  background-color: #ece9e0;
+  background-color: #e0d8c6;
+  color: #3e4a3e;
 }
 
 

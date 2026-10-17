@@ -1,0 +1,79 @@
+/* ==============================
+   마이페이지 사이드바 메뉴
+============================== */
+
+.mypage-menu-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* 하위 메뉴 기본 상태: 접힘 */
+.mypage-sidebar-submenu {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  margin-top: 0;
+
+  pointer-events: none;
+
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    margin-top 0.35s ease;
+}
+
+
+/* 마이페이지에 마우스를 올렸을 때 */
+.mypage-menu-group:hover .mypage-sidebar-submenu {
+  max-height: 180px;
+  opacity: 1;
+  margin-top: 0px;
+  pointer-events: auto;
+}
+
+
+/* 현재 마이페이지 계열에 들어와 있을 때 */
+.mypage-menu-group.open .mypage-sidebar-submenu {
+  max-height: 180px;
+  opacity: 1;
+  margin-top: 0.5px;
+  pointer-events: auto;
+}
+
+
+/* ==============================
+   마이페이지 하위 버튼
+============================== */
+
+.mypage-sidebar-submenu button {
+  width: 100%;
+  padding-left: 28px;
+  text-align: center;
+
+  font-size: 14px;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+
+
+/* 하위 메뉴 hover */
+.mypage-sidebar-submenu button:hover {
+  font-weight: 600;
+}
+
+
+/* 현재 선택된 하위 메뉴 */
+.mypage-sidebar-submenu .active-submenu {
+  font-weight: 700;
+}

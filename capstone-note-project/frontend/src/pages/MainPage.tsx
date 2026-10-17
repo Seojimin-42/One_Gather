@@ -1,36 +1,23 @@
 /* 메인페이지 레이아웃 */
 
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { api, API_BASE_URL } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
-import "../styles/MainPage.css";
 import NoteDetailModal from "../components/NoteDetailModal";
 import CreateNoteModal from "../components/CreateNoteModal";
 import AI_Assistant from "../components/AI_Assistant";
-
-import LoginModal from "../components/LoginModal";
-import SignUpModal from "../components/SignUpModal";
-import FindAccountModal from "../components/FindAccountModal";
-import FindIdResultModal from "../components/FindIdResultModal";
-import ResetPasswordModal from "../components/ResetPasswordModal";
-import FindPWResultModal from "../components/FindPWResultModal";
+import AccountButton from "../components/AccountButton";
+import Sidebar from "../components/Sidebar";
 
 /* 이미지 임포트 */
-import logo from "../assets/logo.png";
-import personIcon from "../assets/icon/person.png";
-import sidebarBook from "../assets/icon/sidebar_book.png";
-
 import likedIcon from "../assets/icon/Liked.png";
 import unlikedIcon from "../assets/icon/UnLiked.png";
 import searchIcon from "../assets/icon/search.png"
 import viewDetailsIcon from "../assets/icon/view_details.png"
 
-type LoginUser = {
-  id: number;
-  email: string;
-  nickname: string;
-};
+import "../styles/MainPage.css";
 
 type Note = {
   id: number;
@@ -88,20 +75,7 @@ function MainPage() {
   const [shareLink, setShareLink] = useState("");
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-  const [isFindAccountModalOpen, setIsFindAccountModalOpen] = useState(false);
-  const [isFindIdResultModalOpen, setIsFindIdResultModalOpen] = useState(false);
-  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
-  const [isFindPWResultModalOpen, setIsFindPWResultModalOpen] = useState(false);
-
-  const [loginUser, setLoginUser] = useState<LoginUser | null>(null);
-
-  const [foundNickname, setFoundNickname] = useState("");
-  const [foundUserId, setFoundUserId] = useState("");
-
-  const [resetEmail, setResetEmail] = useState("");
-  const [findAccountInitialTab, setFindAccountInitialTab] = useState<"id" | "password">("id");
+  const { loginUser } = useAuth();
 
   const navigate = useNavigate();
 
@@ -608,128 +582,19 @@ function MainPage() {
     }
   };
 
-    // 새로고침해도 로그인 상태 복구하도록 /me 호출
-    useEffect(() => {
-      const checkLoginUser = async () => {
-        try {
-            const response = await fetch("/api/users/me", {
-              method: "GET",
-              credentials: "include",
-            });
-
-            if (!response.ok) {
-              setLoginUser(null);
-              return;
-            }
-
-            const user = await response.json();
-
-            setLoginUser(user);
-
-        } catch (error) {
-            console.error("로그인 상태 확인 실패:", error);
-            setLoginUser(null);
-        }
-      };
-
-      checkLoginUser();
-    }, []);
-
-    const handleLogout = async () => {
-      const confirmed = window.confirm(
-        "로그아웃하시겠습니까?"
-      );
-
-      if(!confirmed) {
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/users/logout", {
-          method: "POST",
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          alert("로그아웃에 실패했습니다.");
-          return;
-        }
-
-        setLoginUser(null);
-
-        alert("로그아웃되었습니다.");
-
-      } catch (error) {
-        console.error("로그아웃 오류:", error);
-        alert("서버와 통신 중 오류가 발생했습니다.");
-      }
-  };
-
   return (
     
     <div className="page">
       <div className="layout">
-        <aside className="sidebar">
-          <div className="sidebar-top">
-            <div 
-              className="sidebar-logo"
-              onClick={() => {
-                setActiveShelfIndexId(null);
-                setSearchText("");
-                setCurrentPage(1);
-                navigate("/");
-              }}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setActiveShelfIndexId(null);
-                  setSearchText("");
-                  setCurrentPage(1);
-                  navigate("/")
-                }
-              }}>
 
-
-              <img src={logo} alt="One Gather 로고"/>
-            </div>
-
-            <div className="sidebar-menu">
-              <button
-                onClick={() => {
-                  setActiveShelfIndexId(null);
-                  setSearchText("");
-                  setCurrentPage(1);
-                  navigate("/");
-                }}
-                type="button"
-                >전체노트
-              </button>
-
-              <button
-                onClick={() => navigate("/recent")}
-                type="button"
-                >최근학습
-              </button>
-
-              <button
-                onClick={() => navigate("/favorite")}
-                type="button"
-                >즐겨찾기
-              </button>
-
-              <button
-                onClick={() => navigate("/mypage")}
-                type="button"
-                >마이페이지
-              </button>
-            </div>
-          </div>
-
-          <div className="sidebar-bottom">
-            <img src={sidebarBook} alt = "책 장식"/>
-          </div>
-        </aside>
+        <Sidebar
+          onGoHome={() => {
+            setActiveShelfIndexId(null);
+            setSearchText("");
+            setCurrentPage(1);
+            navigate("/");
+          }}
+        />
 
         <main className="main note-create-main">
           <div className="topbar">
@@ -748,30 +613,7 @@ function MainPage() {
               />
             </div>
 
-            <button
-              type="button"
-              className="account-button"
-              onClick={() => {
-                if (loginUser) {
-                  // 로그인 상태
-                  handleLogout();
-                } else {
-                  // 로그아웃 상태
-                  setIsLoginModalOpen(true);
-                }
-              }}
-            >
-            <img
-              src={personIcon}
-              alt="계정"
-              className="account-icon"
-            />
-            <span>
-              {loginUser
-                ? `${loginUser.nickname}님`
-                : "계정"}
-            </span>
-            </button>
+            <AccountButton />
           </div>
 
           <div className="content-wrapper">
@@ -1015,93 +857,6 @@ function MainPage() {
               }}
             />
           )}
-
-          {isLoginModalOpen && (
-            <LoginModal
-              onClose={() => setIsLoginModalOpen(false)}
-              onLoginSuccess={(user) => {
-                setLoginUser(user);
-              }}
-              onSignUp={() => {
-                setIsLoginModalOpen(false);
-                setIsSignUpModalOpen(true);
-              }}
-              onFindAccount={() => {
-                setFindAccountInitialTab("id");
-                setIsLoginModalOpen(false);
-                setIsFindAccountModalOpen(true);
-              }}
-            />
-          )}
-
-          {isSignUpModalOpen && (
-            <SignUpModal
-              onClose={() => setIsSignUpModalOpen(false)}
-            />
-          )}
-
-          {isFindAccountModalOpen && (
-            <FindAccountModal
-              initialTab={findAccountInitialTab}
-              onClose={() => setIsFindAccountModalOpen(false)}
-
-              onIdFound={(nickname, email) => {
-                setFoundNickname(nickname);
-                setFoundUserId(email);
-
-                setIsFindAccountModalOpen(false);
-                setIsFindIdResultModalOpen(true);
-              }}
-
-              onPasswordVerified={(email) => {
-                setResetEmail(email);
-
-                setIsFindAccountModalOpen(false);
-                setIsResetPasswordModalOpen(true);
-              }}
-            />
-          )}
-
-          {isFindIdResultModalOpen && (
-            <FindIdResultModal
-              nickname={foundNickname}
-              userId={foundUserId}
-              onClose={() => setIsFindIdResultModalOpen(false)}
-
-              onFindPassword={() => {
-                setFindAccountInitialTab("password");
-                setIsFindIdResultModalOpen(false);
-                setIsFindAccountModalOpen(true);
-              }}
-
-              onLogin={() => {
-                setIsFindIdResultModalOpen(false);
-                setIsLoginModalOpen(true);
-              }}
-            />
-          )}
-
-          {isResetPasswordModalOpen && (
-            <ResetPasswordModal
-              email={resetEmail}
-              onClose={() => setIsResetPasswordModalOpen(false)}
-              onPasswordChanged={() => {
-                setIsResetPasswordModalOpen(false);
-                setIsFindPWResultModalOpen(true);
-              }}
-            />
-          )}
-
-          {isFindPWResultModalOpen && (
-            <FindPWResultModal
-              onClose={() => setIsFindPWResultModalOpen(false)}
-              onLogin={() => {
-                setIsFindPWResultModalOpen(false);
-                setIsLoginModalOpen(true);
-              }}
-            />
-          )}
-          
           </section>
           </div>
         </main>

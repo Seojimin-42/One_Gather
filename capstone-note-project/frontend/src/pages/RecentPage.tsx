@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+
 import "../styles/RecentPage.css";
 
-import logo from "../assets/logo.png";
-import sidebarBook from "../assets/icon/sidebar_book.png";
 import searchIcon from "../assets/icon/search.png";
+
+import AccountButton from "../components/AccountButton";
+import AI_Assistant from "../components/AI_Assistant";
+import Sidebar from "../components/Sidebar";
 
 type Note = {
   id: number;
@@ -30,6 +34,8 @@ type Note = {
 const ITEMS_PER_PAGE = 4;
 
 function RecentPage() {
+  const { loginUser } = useAuth();
+
   const [recentNotes, setRecentNotes] = useState<Note[]>([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -118,42 +124,8 @@ function RecentPage() {
   return (
     <div className="page">
       <div className="layout">
-        <aside className="sidebar">
-          <div className="sidebar-top">
-            <div
-              className="sidebar-logo"
-              onClick={() => navigate("/")}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  navigate("/");
-                }
-              }}
-            >
-              <img src={logo} alt="One Gather 로고" />
-            </div>
-
-            <div className="sidebar-menu">
-              <button type="button" onClick={() => navigate("/")}>
-                전체노트
-              </button>
-              <button type="button" className="active-menu">
-                최근학습
-              </button>
-              <button type="button" onClick={() => navigate("/favorite")}>
-                즐겨찾기
-              </button>
-              <button type="button" onClick={() => navigate("/mypage")}>
-                마이페이지
-              </button>
-            </div>
-          </div>
-
-          <div className="sidebar-bottom">
-            <img src={sidebarBook} alt="책 장식" />
-          </div>
-        </aside>
+        
+        <Sidebar />
 
         <main className="main recent-main">
           <div className="topbar">
@@ -164,8 +136,14 @@ function RecentPage() {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
-              <img className="search-icon" src={searchIcon} alt="검색" />
+              <img 
+                className="search-icon"
+                src={searchIcon}
+                alt="검색"
+              />
             </div>
+
+            <AccountButton />
           </div>
 
           <section className="recent-content">
@@ -251,6 +229,13 @@ function RecentPage() {
             </div>
           </section>
         </main>
+
+        {loginUser && (
+            <AI_Assistant 
+                noteContent=""
+                userId={loginUser.id}
+            />
+        )}
       </div>
     </div>
   );

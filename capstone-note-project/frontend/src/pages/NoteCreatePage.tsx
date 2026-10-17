@@ -1,20 +1,31 @@
-/* NoteCreatePage */
-
-import "../styles/MainPage.css"
-import "../styles/NoteCreatePage.css";
-
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useLocation ,useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import { uploadImageToCloudinary } from "../api/cloudinary";
+import { useAuth } from "../contexts/AuthContext";
+import {
+  Type,
+  PenTool,
+  Image as ImageIcon,
+  Undo2,
+  Redo2,
+  Trash2,
+  Save,
+  Sidebar as Sidetab,
+  AlignLeft,
+  AlignCenter,
+  AlignRight
+} from "lucide-react";
 
-import logo from "../assets/logo.png";
-import sidebarBook from "../assets/icon/sidebar_book.png";
+import "../styles/MainPage.css"
+import "../styles/NoteCreatePage.css";
+
 import searchIcon from "../assets/icon/search.png";
 
-import { Type,  PenTool, Image as ImageIcon, Undo2, Redo2, Trash2, Save, Sidebar,
-  AlignLeft, AlignCenter, AlignRight} from "lucide-react";
 import PageEditor from "../components/PageEditor";
+import AccountButton from "../components/AccountButton";
+import AI_Assistant from "../components/AI_Assistant";
+import Sidebar from "../components/Sidebar";
 
 /* 이미지 임포트 */
 import note1 from "../assets/content/content1.png";
@@ -89,13 +100,14 @@ const isSameSnapshot = (a: EditorSnapshot, b: EditorSnapshot) =>
   JSON.stringify(a) === JSON.stringify(b);
 
 function NoteCreatePage() {
+  const { loginUser } = useAuth();
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const [title, setTitle] = useState("");
   const [searchText, setSearchText] = useState("");
   const [activePageId, setActivePageId] = useState(1);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showTextToolbar, setShowTextToolbar] = useState(false);
   const [, setToolbarRefreshKey] = useState(0);
   const refreshToolbarState = useCallback(() => {
@@ -1470,49 +1482,15 @@ useEffect(() => {
   return (
     <div className="page">
       <div className="layout">
-        <aside className={`sidebar note-create-sidebar ${isSidebarOpen ? "open" : ""}`}>
-          <div className="sidebar-top">
-            <div
-              className="sidebar-logo"
-              onClick={() => {
-                setSearchText("");
-                void handleNavigateWithSaveCheck("/");
-              }}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setSearchText("");
-                  void handleNavigateWithSaveCheck("/");
-                }
-              }}
-            >
-              <img src={logo} alt="One Gather 로고" />
-            </div>
+        <Sidebar
+          onNavigate={(path) => {
+            if (path === "/") {
+              setSearchText("");
+            }
 
-            <div className="sidebar-menu">
-              <button type="button" onClick={() => void handleNavigateWithSaveCheck("/")}>
-                전체노트
-              </button>
-
-              <button type="button" onClick={() => void handleNavigateWithSaveCheck("/recent")}>
-                최근학습
-              </button>
-
-              <button type="button" onClick={() => void handleNavigateWithSaveCheck("/favorite")}>
-                즐겨찾기
-              </button>
-
-              <button type="button" onClick={() => void handleNavigateWithSaveCheck("/mypage")}>
-                마이페이지
-              </button>
-            </div>
-          </div>
-
-          <div className="sidebar-bottom">
-            <img src={sidebarBook} alt="책 장식" />
-          </div>
-        </aside>
+            void handleNavigateWithSaveCheck(path);
+          }}
+        />
 
         <main className="main note-create-main">
           <div className="topbar">
@@ -1530,6 +1508,8 @@ useEffect(() => {
                 alt="검색"
               />
             </div>
+
+            <AccountButton />
           </div>
 
             <section className="content note-create-content-section">
@@ -2070,6 +2050,13 @@ useEffect(() => {
               </div>
             )}
         </main>
+
+        {loginUser && (
+            <AI_Assistant 
+                noteContent=""
+                userId={loginUser.id}
+            />
+        )}
       </div>
     </div>
   );

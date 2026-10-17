@@ -3,15 +3,15 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { api } from "../api/api";
+import { useAuth } from "../contexts/AuthContext";
 
 import "../styles/MainPage.css";
 import "../styles/NoteCreatePage.css";
 import "../styles/NoteViewPage.css";
 
 import AI_Assistant from "../components/AI_Assistant";
-
-import logo from "../assets/logo.png";
-import sidebarBook from "../assets/icon/sidebar_book.png";
+import AccountButton from "../components/AccountButton";
+import Sidebar from "../components/Sidebar";
 
 /* 툴바 아이콘 - NoteCreatePage와 동일한 lucide-react 사용 */
 import {
@@ -189,7 +189,9 @@ function transformImageHtml(html: string): string {
 }
 
 function NoteViewPage() {
+    const { loginUser } = useAuth();
     const { id } = useParams();
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -1301,40 +1303,7 @@ function NoteViewPage() {
     <div className="page">
       <div className="layout">
         {viewMode === "single" && (
-          <aside className="sidebar">
-            <div>
-              <div
-                className="sidebar-logo"
-                onClick={() => navigate("/")}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") navigate("/");
-                }}
-              >
-                <img src={logo} alt="One Gather 로고" />
-              </div>
-
-              <div className="sidebar-menu">
-                <button type="button" onClick={() => navigate("/")}>
-                  전체노트
-                </button>
-                <button type="button" onClick={() => navigate("/recent")}>
-                  최근학습
-                </button>
-                <button type="button" onClick={() => navigate("/favorite")}>
-                  즐겨찾기
-                </button>
-                <button type="button" onClick={() => navigate("/mypage")}>
-                  마이페이지
-                </button>
-              </div>
-            </div>
-
-            <div className="sidebar-bottom">
-              <img src={sidebarBook} alt="책 장식" />
-            </div>
-          </aside>
+          <Sidebar />
         )}
 
         {/* 메인 영역 */}
@@ -1355,6 +1324,8 @@ function NoteViewPage() {
                         alt="검색" 
                     />
                 </div>
+
+                <AccountButton />
           </div>
           )}
 
@@ -2089,7 +2060,13 @@ function NoteViewPage() {
               )}
         </main>
 
-        <AI_Assistant noteContent={aiNoteContent}/>
+        {loginUser && (
+          <AI_Assistant 
+            noteContent={aiNoteContent}
+            userId={loginUser.id}
+          />
+        )}
+        
 
       </div>
     </div>

@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import { api } from "../api/api";
 
 import "../styles/MyPage.css";
 
-import logo from "../assets/logo.png";
-import sidebarBook from "../assets/icon/sidebar_book.png";
 import searchIcon from "../assets/icon/search.png";
+
+import AccountButton from "../components/AccountButton";
+import AI_Assistant from "../components/AI_Assistant";
+import Sidebar from "../components/Sidebar";
+
 
 type Note = {
     id: number;
@@ -30,6 +34,8 @@ type Note = {
 };
 
 function MyPage() {
+    const { loginUser } = useAuth();
+
     const navigate = useNavigate();
 
     const [notes, setNotes] = useState<Note[]>([]);
@@ -186,74 +192,7 @@ function MyPage() {
         <div className="page">
             <div className="layout">
 
-                <aside className="sidebar">
-                    <div className="sidebar-top">
-                        <div
-                        className="sidebar-logo"
-                        onClick={() => navigate("/")}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                            navigate("/");
-                            }
-                        }}
-                        >
-                        <img src={logo} alt="One Gather 로고" />
-                        </div>
-
-                        <div className="sidebar-menu">
-                            <button type="button" onClick={() => navigate("/")}>
-                                전체노트
-                            </button>
-
-                            <button type="button" onClick={() => navigate("/recent")}>
-                                최근학습
-                            </button>
-
-                            <button type="button" onClick={() => navigate("/favorite")}>
-                                즐겨찾기
-                            </button>
-
-                            <button 
-                                type="button"
-                                className="active-menu"
-                                onClick={() => navigate("/mypage")}
-                            >
-                                마이페이지
-                            </button>
-
-                            <div className="mypage-sidebar-submenu">
-
-                                <button
-                                    type="button"
-                                    className="active-submenu"
-                                    onClick={() => navigate("/mypage")}
-                                >
-                                    내 정보
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() => navigate("/mypage/friend-search")}
-                                >
-                                    친구 검색
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() => navigate("/mypage/friend-list")}
-                                >
-                                    친구 목록
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="sidebar-bottom">
-                        <img src={sidebarBook} alt="책 장식" />
-                    </div>
-                </aside>
+            <Sidebar />
 
             <main className="main mypage-main">
             <div className="topbar">
@@ -266,6 +205,8 @@ function MyPage() {
                 />
                 <img className="search-icon" src={searchIcon} alt="검색" />
                 </div>
+
+                <AccountButton />
             </div>
 
             <section className="mypage-content">
@@ -275,7 +216,7 @@ function MyPage() {
                     <button
                         type="button"
                         className="mypage-tab-button active-tab"
-                        onClick={() => navigate("/mypage")}
+                        onClick={() => navigate("/mypage/info")}
                     >
                         내 정보
                     </button>
@@ -421,8 +362,16 @@ function MyPage() {
                         ))}
                     </div>
                 </div>
+
             </section>
             </main>
+
+            {loginUser && (
+                <AI_Assistant 
+                    noteContent=""
+                    userId={loginUser.id}
+                />
+            )}
         </div>
         </div>
     );

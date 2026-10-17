@@ -1,0 +1,29 @@
+.account-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 14px;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+
+  color: #333333;
+  font-size: 24px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  margin-right: 8px;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.account-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}

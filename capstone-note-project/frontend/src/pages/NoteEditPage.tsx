@@ -1,3 +1,5 @@
+// 현재 미사용인 페이지
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/api";
